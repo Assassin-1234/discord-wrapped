@@ -50,12 +50,12 @@ module.exports = {
             avatar: data.avatar_hash,
             total_spend: totalSpent,
 
-            most_recent_favorite_gifs: lastFavGifs,
+            most_recent_favorite_gifs: lastFavGifs ? lastFavGifs : null,
     
-            most_used_slash_commands:favSlashCommands.slice(0, 5),
-            most_used_stickers: favStickers.slice(0, 5),
-            most_used_emojis: sortedEmojis.slice(0, 3),
-            most_used_activities: sortedActivities.slice(0, 2)
+            most_used_slash_commands:favSlashCommands.length ? favSlashCommands.slice(0, 5) : null,
+            most_used_stickers: favStickers.length ? favStickers.slice(0, 5) : null,
+            most_used_emojis: sortedEmojis.length ? sortedEmojis.slice(0, 3) : null,
+            most_used_activities: sortedEmojis.length ? sortedActivities.slice(0, 2) : null
         }
     }
 }
