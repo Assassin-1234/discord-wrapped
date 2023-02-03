@@ -49,9 +49,7 @@ module.exports = {
             discrim: data.discriminator,
             avatar: data.avatar_hash,
             total_spend: totalSpent,
-
             most_recent_favorite_gifs: lastFavGifs ? lastFavGifs : null,
-    
             most_used_slash_commands:favSlashCommands.length ? favSlashCommands.slice(0, 5) : null,
             most_used_stickers: favStickers.length ? favStickers.slice(0, 5) : null,
             most_used_emojis: sortedEmojis.length ? sortedEmojis.slice(0, 3) : null,
@@ -59,18 +57,3 @@ module.exports = {
         }
     }
 }
-
-const parseCSV = (input) => {
-    return Papa.parse(input, {
-        header: true,
-        newline: ',\r'
-    })
-        .data
-        .filter((m) => m.Contents)
-        .map((m) => ({
-            id: m.ID,
-            timestamp: m.Timestamp,
-            length: m.Contents.length,
-            words: m.Contents.split(' ')
-        }));
-};
