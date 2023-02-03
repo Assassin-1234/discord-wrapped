@@ -1,3 +1,5 @@
+(async() => {
 const { getUserInfo } = require('./src/extractor/extract')
 
-getUserInfo('./package/account/user.json')
+console.log((await getUserInfo('package/account/user.json')))
+})()
