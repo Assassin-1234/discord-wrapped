@@ -1,3 +1,4 @@
+require('dotenv').config()
 (async() => {
 const { getUserInfo } = require('./src/extractor/extract')
 
