@@ -1,6 +1,6 @@
-require('dotenv').config()
 (async() => {
-const { getUserInfo } = require('./src/extractor/extract')
+const { getUserInfo, returnGameData } = require('./src/extractor/extract')
 
-console.log((await getUserInfo('package/account/user.json')))
+const data = await getUserInfo('package/account/user.json')
+await returnGameData(data.most_played_games)
 })()
