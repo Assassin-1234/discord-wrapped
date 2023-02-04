@@ -6,7 +6,7 @@ module.exports = {
         arr.forEach(async (e) => {
             data = await axios.get(`https://discord.com/api/v9/applications/${e.application_id}/rpc`);
             console.log(data.data)
-            gamedata.push(data)
+            gamedata.push(data.data)
 
         })
         return gamedata;
