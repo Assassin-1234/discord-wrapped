@@ -1,7 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
 const path = require('path');
-
+const stream = require('stream')
 let messages = [];
 const messagesPath = 'package/messages';
 
@@ -121,4 +121,32 @@ module.exports = {
             most_used_words: mostUsedWords
         }
     },
+    async getAnalytics(dir) {
+        let eventCounts = {};
+
+        const readStream = fs.createReadStream(dir);
+        const chunkStream = new stream.Transform({
+          transform: function (chunk, encoding, done) {
+            const chunkString = chunk.toString();
+            const chunkArray = chunkString.split('\n');
+            chunkArray.forEach((event) => {
+              if (event !== '') {
+                const eventObject = JSON.parse(event);
+                const eventType = eventObject.event_type;
+                if (!eventCounts[eventType]) {
+                  eventCounts[eventType] = 1;
+                } else {
+                  eventCounts[eventType] += 1;
+                }
+              }
+            });
+            done();
+          }
+        });
+        
+        readStream.pipe(chunkStream)
+          .on('finish', () => {
+            console.log(eventCounts);
+        });
+    }
 }
