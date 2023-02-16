@@ -1,158 +1,413 @@
-(async () => {
-    const Canvas = require('canvas')
+const Canvas = require('canvas');
 
-    const { writeFileSync } = require('fs')
-    const fs = require('fs')
-    const puppeteer = require('puppeteer');
-    const gifFrames = require('gif-frames');
+const fs = require('fs');
+const editly = require('editly');
 
-    const coordinates = [
-        { x: 141, y: 485, w: 372, h: 372 },
-        { x: 774, y: 485, w: 372, h: 372 },
-        { x: 1429, y: 485, w: 372, h: 372 },
-    ]
-    const emojisCoordinates = [
-        [204, 515, 257, 257],
-        [1215, 40, 279, 279],
-        [1582, 228, 279, 279],
-        [1213, 442, 279, 279],
-        [1584, 692, 279, 279],
-    ]
-    const axios = require('axios');
-    const ghEmoji = require('github-emoji');
+const ffmpegPath = 'ffmpeg.exe';
+const ffprobePath = 'ffprobe.exe';
+const audioFilePath = 'audio.mp3';
 
-    async function fetchEmojiBuffer(emoji) {
-        const codepoint = Array.from(emoji)
-            .map((char) => char.codePointAt(0).toString(16))
-            .join('-');
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
-        const url = `https://emoji.aranja.com/static/emoji-data/img-twitter-72/${codepoint}.png`;
+const axios = require('axios');
+const ghEmoji = require('github-emoji');
+const { getUserInfo } = require('../extractor/extract');
 
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-        return response.data;
-    }
-    async function fetchDiscordEmojiBuffer(id) {
-        const url = `https://cdn.discordapp.com/emojis/${id}.png`;
+// COORDINATES
+const coordinates = [
+	{ x: 141, y: 485, w: 372, h: 372 },
+	{ x: 774, y: 485, w: 372, h: 372 },
+	{ x: 1429, y: 485, w: 372, h: 372 },
+];
+const emojisCoordinates = [
+	[204, 515, 257, 257],
+	[1215, 40, 279, 279],
+	[1582, 228, 279, 279],
+	[1213, 442, 279, 279],
+	[1584, 692, 279, 279],
+];
+const gamesCoordinates = [
+	[288, 308, 304, 304],
+	[619, 308, 304, 304],
+	[952, 308, 304, 304],
+	[1289, 308, 304, 304],
+];
+const stickersCoordinates = [
+	[903, 327, 192, 192],
+	[196, 680, 275, 275],
+	[636, 680, 275, 275],
+	[1076, 680, 275, 275],
+	[1516, 680, 275, 275],
+];
+const wordsCoordinates = {
+	name: [
+		[630, 364],
+		[630, 495],
+		[630, 626],
+		[630, 758],
+		[630, 890],
+	],
+	count: [
+		[1230, 364],
+		[1230, 495],
+		[1230, 626],
+		[1230, 758],
+		[1230, 890],
+	],
+};
+const summaryCoordinates = [
+	[960, 207],
+	[975, 291],
+	[876, 373],
+	[870, 460],
+	[860, 552],
+	[980, 634],
+	[940, 707],
+	[1030, 780],
+	[1150, 854],
+	[1027, 937],
+];
 
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-        return response.data;
-    }
+module.exports = async () => {
+	const data = await getUserInfo('package/account/user.json');
 
-    async function createMostUsedSlash(array) {
-        const canvas = Canvas.createCanvas(1920, 1080)
-        const ctx = canvas.getContext('2d')
-        const image = 'image2'
-        ctx.drawImage((await Canvas.loadImage('src/assets/' + image + '.png')), 0, 0)
+	// UTILITY FUNCTIONS
+	async function fetchEmojiBuffer(emoji) {
+		const codepoint = Array.from(emoji)
+			.map((char) => char.codePointAt(0).toString(16))
+			.join('-');
 
-        ctx.font = '75px Arial'
+		const url = `https://emoji.aranja.com/static/emoji-data/img-twitter-72/${codepoint}.png`;
 
-        ctx.fillText(array[0], 250, 335)
-        ctx.fillText(array[1], 250, 450)
-        ctx.fillText(array[2], 250, 565)
-        ctx.fillText(array[3], 250, 680)
-        ctx.fillText(array[4], 250, 795)
+		const response = await axios.get(url, { responseType: 'arraybuffer' });
+		return response.data;
+	}
+	async function fetchDiscordEmojiBuffer(id) {
+		const url = `https://cdn.discordapp.com/emojis/${id}.png`;
 
-        const buffer = canvas.toBuffer();
-        writeFileSync("src/test/" + image + ".png", buffer);
-    }
-    async function createRecentGIFs(tenorLinks) {
-        const canvas = Canvas.createCanvas(1920, 1080)
-        const ctx = canvas.getContext('2d')
-        const image = 'image3'
+		const response = await axios.get(url, { responseType: 'arraybuffer' });
+		return response.data;
+	}
+	async function fetchGameImage(id, image_id) {
+		const url = `https://cdn.discordapp.com/app-icons/${id}/${image_id}.png`;
 
-        let i = 0;
+		const response = await axios.get(url, { responseType: 'arraybuffer' });
+		return response.data;
+	}
+	async function fetchStickerImage(id) {
+		const url = `https://cdn.discordapp.com/stickers/${id}.png`;
 
-        ctx.drawImage((await Canvas.loadImage('src/assets/' + image + '.png')), 0, 0)
+		const response = await axios.get(url, { responseType: 'arraybuffer' });
+		return response.data;
+	}
+	async function fetchTenorGIF(url) {
+		const response = await axios.get(url, { responseType: 'arraybuffer' });
+		return response.data;
+	}
+	function getVideoFirstFrame(inputPath) {
+		const id = String(Math.random()) + '.png';
 
-        const browser = await puppeteer.launch({});
-        const pagePromises = tenorLinks.map(async (tenorLink) => {
-            const page = await browser.newPage();
-            await page.goto(tenorLink);
+		return new Promise((resolve, reject) => {
+			ffmpeg(inputPath)
+				.screenshots({
+					count: 1,
+					timemarks: ['0'],
+					size: '320x240',
+					filename: id,
+				})
+				.on('end', async () => {
+					const imageBuffer = await fs.readFileSync(id);
+					resolve(imageBuffer);
+					await fs.rmSync(id);
+				})
+				.on('error', (err) => {
+					reject(new Error(`Error extracting first frame: ${err.message}`));
+				});
+		});
+	}
 
-            const img = await page.waitForXPath('/html/body/div/div/div[3]/div/div[1]/div[2]/div/div/div/div/img');
+	// IMAGE MANIPULATION FUNCTIONS
+	// async function createMostUsedSlash(array) {
+	// 	const canvas = Canvas.createCanvas(1920, 1080);
+	// 	const ctx = canvas.getContext('2d');
+	// 	const image = 'image2';
+	// 	ctx.drawImage((await Canvas.loadImage('src/assets/' + image + '.png')), 0, 0);
 
-            const gifUrl = await page.evaluate(img => img.src, img);
+	// 	ctx.font = '75px Arial';
 
-            const filename = tenorLink.split('/').pop() + '.gif';
+	// 	ctx.fillText(array[0], 250, 335);
+	// 	ctx.fillText(array[1], 250, 450);
+	// 	ctx.fillText(array[2], 250, 565);
+	// 	ctx.fillText(array[3], 250, 680);
+	// 	ctx.fillText(array[4], 250, 795);
 
-            const gifBuffer = await page.goto(gifUrl).then(res => res.buffer());
-            fs.writeFileSync(filename, gifBuffer);
+	// 	const buffer = canvas.toBuffer();
+	// 	fs.writeFileSync('src/output/' + image + '.png', buffer);
+	// }
+	async function createRecentGIFs(tenorLinks) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
+		const image = 'image3';
 
-            await gifFrames({ url: filename, frames: 0 }).then(async function (frameData) {
-                ctx.drawImage((await Canvas.loadImage(frameData[0].getImage()._obj)), coordinates[i].x, coordinates[i].y, coordinates[i].w, coordinates[i].h)
-            });
+		let i = 0;
 
-            fs.rmSync(filename);
-            i++;
-            return page.close();
-        });
-        await Promise.all(pagePromises);
-        await browser.close();
+		ctx.drawImage((await Canvas.loadImage('src/assets/' + image + '.png')), 0, 0);
 
-        const buffer = canvas.toBuffer();
-        writeFileSync("src/test/" + image + ".png", buffer);
-    }
-    async function createMostUsedEmojis(array) {
-        const canvas = Canvas.createCanvas(1920, 1080)
-        const ctx = canvas.getContext('2d')
+		const pagePromises = tenorLinks.map(async (tenorLink) => {
+			tenorLink = tenorLink.src;
 
-        ctx.drawImage((await Canvas.loadImage('src/assets/image4.png')), 0, 0)
+			const filename = tenorLink.split('/').pop() + '.gif';
 
-        for (let i = 0; i < array.length; i++) {
-            const emojiObj = array[i];
-            const emoji = emojiObj.name;
+			const gifBuffer = await fetchTenorGIF(tenorLink);
+			fs.writeFileSync(filename, gifBuffer);
 
-            let buffer;
+			const frameData = await getVideoFirstFrame(filename);
 
-            if (!emojiObj.id) buffer = await fetchEmojiBuffer(emoji)
-            if (emojiObj.id) buffer = await fetchDiscordEmojiBuffer(emojiObj.id)
+			ctx.drawImage((await Canvas.loadImage(frameData)), coordinates[i].x, coordinates[i].y, coordinates[i].w, coordinates[i].h);
 
-            const image = await Canvas.loadImage(buffer)
+			fs.rmSync(filename);
+			i++;
+		});
+		await Promise.all(pagePromises);
 
-            ctx.drawImage(image, emojisCoordinates[i][0], emojisCoordinates[i][1], emojisCoordinates[i][2], emojisCoordinates[i][3]);
+		const buffer = canvas.toBuffer();
+		fs.writeFileSync('src/output/' + image + '.png', buffer);
+	}
+	async function createMostUsedEmojis(array) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
 
-            if (i === (array.length - 1)) {
+		ctx.drawImage((await Canvas.loadImage('src/assets/image4.png')), 0, 0);
 
-                ctx.font = '75px Arial'
+		for (let i = 0; i < array.length; i++) {
+			const emojiObj = array[i];
+			const emoji = emojiObj.name;
 
-                array.forEach((x) => {
-                    if (x.id) return;
+			let buffer;
 
-                    const emojiname = ghEmoji.namesOf(x.name)[0]
-                        .replace('+1', 'thumbs_up') // lol
+			if (!emojiObj.id) buffer = await fetchEmojiBuffer(emoji);
+			if (emojiObj.id) buffer = await fetchDiscordEmojiBuffer(emojiObj.id);
 
-                    if (emojiname.length >= 7) {
-                        x.name = emojiname.slice(0, 7) + '...'
-                    } else {
-                        x.name = emojiname
-                    }
-                })
-                ctx.fillText(array[0].name, 780, 430);
-                ctx.fillText(array[1].name, 780, 530);
-                ctx.fillText(array[2].name, 780, 630);
-                ctx.fillText(array[3].name, 780, 730);
-                ctx.fillText(array[4].name, 780, 830);
+			const image = await Canvas.loadImage(buffer);
 
-                const buffer = canvas.toBuffer();
-                writeFileSync("src/test/image4.png", buffer);
-            }
-        }
-    }
-    async function createMoneyCount(text) {
-        const canvas = Canvas.createCanvas(1920, 1080)
-        const ctx = canvas.getContext('2d')
-        const image = 'image5'
-        ctx.drawImage((await Canvas.loadImage('src/assets/' + image + '.png')), 0, 0)
+			ctx.drawImage(image, emojisCoordinates[i][0], emojisCoordinates[i][1], emojisCoordinates[i][2], emojisCoordinates[i][3]);
 
-        ctx.font = '275px Sans'
-        ctx.strokestyle = '#000000'
-        ctx.lineWidth = '7'
+			if (i === (array.length - 1)) {
 
-        ctx.strokeText(text, 75, 500)
+				ctx.font = '75px Arial';
 
-        const buffer = canvas.toBuffer();
+				array.forEach((x) => {
+					if (x.id) return;
 
-        writeFileSync("src/test/" + image + ".png", buffer);
-    }
-    createMoneyCount('$5400')
-})()
+					const emojiname = ghEmoji.namesOf(x.name)[0]
+						.replace('+1', 'thumbs_up');
+
+					if (emojiname.length >= 7) {
+						x.name = emojiname.slice(0, 7) + '...';
+					}
+					else {
+						x.name = emojiname;
+					}
+				});
+				ctx.fillText(array[0].name, 780, 430);
+				ctx.fillText(array[1].name, 780, 530);
+				ctx.fillText(array[2].name, 780, 630);
+				ctx.fillText(array[3].name, 780, 730);
+				ctx.fillText(array[4].name, 780, 830);
+
+				const outputBuffer = canvas.toBuffer();
+				fs.writeFileSync('src/output/image4.png', outputBuffer);
+			}
+		}
+	}
+	async function createMoneyCount(text) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
+		const image = 'image5';
+		ctx.drawImage((await Canvas.loadImage('src/assets/' + image + '.png')), 0, 0);
+
+		ctx.font = '275px Sans';
+		ctx.strokestyle = '#000000';
+		ctx.lineWidth = '7';
+
+		ctx.strokeText(text, 75, 500);
+
+		const buffer = canvas.toBuffer();
+
+		fs.writeFileSync('src/output/' + image + '.png', buffer);
+	}
+	async function createMostPlayedGames(array) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
+
+		ctx.drawImage((await Canvas.loadImage('src/assets/image7.png')), 0, 0);
+		ctx.font = '40px Arial';
+		ctx.textAlign = 'center';
+		for (let i = 0; i < array.length; i++) {
+			const imageBuffer = await fetchGameImage(array[i].id, array[i].icon);
+			const image = await Canvas.loadImage(imageBuffer);
+			const cdnts = gamesCoordinates[i];
+			const name = array[i].name;
+
+			if (name.length >= 7) {
+				array[i].name = name.slice(0, 7) + '...';
+			}
+
+			ctx.drawImage(image, cdnts[0], cdnts[1], cdnts[2], cdnts[3]);
+			ctx.fillText(name, cdnts[0] + 147, cdnts[1] - 15);
+		}
+
+		const buffer = canvas.toBuffer();
+		fs.writeFileSync('src/output/image7.png', buffer);
+	}
+	async function createMostUsedStickers(array) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
+
+		ctx.drawImage((await Canvas.loadImage('src/assets/image9.png')), 0, 0);
+		ctx.font = '40px Arial';
+		ctx.textAlign = 'center';
+		for (let i = 0; i < array.length; i++) {
+			const imageBuffer = await fetchStickerImage(array[i].name);
+			const image = await Canvas.loadImage(imageBuffer);
+			const cdnts = stickersCoordinates[i];
+
+			ctx.drawImage(image, cdnts[0], cdnts[1], cdnts[2], cdnts[3]);
+		}
+
+		const buffer = canvas.toBuffer();
+		fs.writeFileSync('src/output/image9.png', buffer);
+	}
+	async function createMostUsedWords(array) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
+
+		ctx.drawImage((await Canvas.loadImage('src/assets/image10.png')), 0, 0);
+		ctx.font = 'bold 100px Arial';
+
+		for (let i = 0; i < array.length; i++) {
+			const cdnts = wordsCoordinates.name[i];
+			const cdnts2 = wordsCoordinates.count[i];
+
+			ctx.fillText(array[i][0], cdnts[0], cdnts[1]);
+			ctx.fillText(array[i][1], cdnts2[0], cdnts2[1]);
+		}
+
+		const buffer = canvas.toBuffer();
+		fs.writeFileSync('src/output/image10.png', buffer);
+	}
+	async function createSummary(array) {
+		const canvas = Canvas.createCanvas(1920, 1080);
+		const ctx = canvas.getContext('2d');
+		const values = Object.values(array);
+		const keys = Object.keys(array);
+
+		ctx.drawImage((await Canvas.loadImage('src/assets/image11.png')), 0, 0);
+		ctx.font = 'bold 50px Arial';
+
+		for (let i = 0; i < values.length; i++) {
+			const cdnts = summaryCoordinates[i];
+			let name = values[i];
+
+			name = name.toLocaleString();
+
+			if(name == '0') name = 'N/A';
+
+			if(['joinCallCount', 'openCount'].includes(keys[i])) name += ' times';
+			if(['dmChannelCount'].includes(keys[i])) name += ' people';
+			if(['channelCount'].includes(keys[i])) name += ' channels';
+
+			ctx.fillText(name, cdnts[0], cdnts[1]);
+		}
+
+		const buffer = canvas.toBuffer();
+		fs.writeFileSync('src/output/image11.png', buffer);
+	}
+
+	// FRAMES
+	await createRecentGIFs(data.most_recent_favorite_gifs);
+	console.log('Finished creating 1st frame');
+	await createMostUsedEmojis(data.most_used_emojis);
+	console.log('Finished creating 2nd frame');
+	await createMoneyCount(data.total_spend);
+	console.log('Finished creating 3rd frame');
+	await createMostPlayedGames(data.most_played_games);
+	console.log('Finished creating 4th frame');
+	await createMostUsedStickers(data.most_used_stickers);
+	console.log('Finished creating 5th frame');
+	await createMostUsedWords(data.most_used_words);
+	console.log('Finished creating 6th frame');
+
+	// STATISTICS QUICKFIRE
+	await createSummary(data.statistics);
+	console.log('Finished creating 7th frame');
+
+	// EDITING
+
+	editly({
+		// enableFfmpegLog: true,
+		ffprobePath,
+		ffmpegPath,
+		audioFilePath: audioFilePath,
+		outPath: 'wrapped.mp4',
+		width: 1920,
+		height: 1080,
+		clips: [
+			{
+				duration: 2.5,
+				layers: [
+					{ type: 'image', path: 'src/assets/image1.png' },
+				],
+			},
+			{
+				duration: 5,
+				layers: [
+					{ type: 'image', path: 'src/output/image3.png' },
+				],
+			},
+			{
+				duration: 5,
+				layers: [
+					{ type: 'image', path: 'src/output/image4.png' },
+				],
+			},
+			{
+				duration: 5,
+				layers: [
+					{ type: 'image', path: 'src/output/image5.png' },
+				],
+			},
+			{
+				duration: 5,
+				layers: [
+					{ type: 'image', path: 'src/output/image7.png' },
+				],
+			},
+			{
+				duration: 5,
+				layers: [
+					{ type: 'image', path: 'src/output/image9.png' },
+				],
+			},
+			{
+				duration: 5,
+				layers: [
+					{ type: 'image', path: 'src/output/image10.png' },
+				],
+			},
+			{
+				duration: 10,
+				layers: [
+					{ type: 'image', path: 'src/output/image11.png' },
+				],
+			},
+			{
+				duration: 6,
+				layers: [
+					{ type: 'image', path: 'src/assets/image6.png' },
+				],
+			},
+		],
+	});
+};
