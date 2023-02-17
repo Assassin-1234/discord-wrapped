@@ -2,3 +2,5 @@ node_modules
 package
 package.zip
 .env
+ffmpeg.exe
+ffprobe.exe

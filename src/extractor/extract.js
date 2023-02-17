@@ -1,8 +1,11 @@
+const cwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/website/package/';
+
+const messagesPath = cwd + 'messages';
+
 const fs = require('fs');
 const axios = require('axios');
 const path = require('path');
 const { snakeCase } = require('snake-case');
-const messagesPath = 'package/messages';
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const eventsData = [
 	'joinVoiceChannel',
@@ -164,7 +167,7 @@ async function returnGameData(arr) {
 module.exports = {
 
 	async getUserInfo(dir) {
-		const rawData = await fs.readFileSync(dir, 'utf-8').toString();
+		const rawData = await fs.readFileSync(cwd + dir, 'utf-8').toString();
 		const data = JSON.parse(rawData);
 		const stickers = data.settings.frecency.stickerFrecency.stickers;
 		// const scommands = data.settings.frecency.applicationCommandFrecency.applicationCommands;
@@ -189,12 +192,13 @@ module.exports = {
 
 		const mostPlayedGames = await returnGameData(sortedActivities.slice(0, 5));
 
-		const files = await fs.readdirSync('package/activity/analytics');
+		const files = fs.existsSync(cwd + 'activity/analytics') ? await fs.readdirSync(cwd + 'activity/analytics') : [];
 		const filePath = files.find((file) => /events-[0-9]{4}-[0-9]{5}-of-[0-9]{5}\.json/.test(file));
-		const statistics = await readAnalyticsFile('package/activity/analytics/' + filePath);
+		const statistics = await readAnalyticsFile(cwd + 'activity/analytics/' + filePath);
+
 		const messagesPathRegex = /c?([0-9]{16,32})/;
 
-		const channelsIDsFile = fs.readdirSync('package/messages');
+		const channelsIDsFile = fs.readdirSync(messagesPath);
 
 		// Packages before 06-12-2021 does not have the leading "c" before the channel ID
 		const isOldPackage = !channelsIDsFile[0].includes('c');
@@ -204,8 +208,8 @@ module.exports = {
 		await Promise.all(channelsIDs.map((channelID) => {
 			return new Promise((resolve) => {
 
-				const channelDataPath = `package/messages/${isOldPackage ? '' : 'c'}${channelID}/channel.json`;
-				const channelMessagesPath = `package/messages/${isOldPackage ? '' : 'c'}${channelID}/messages.csv`;
+				const channelDataPath = cwd + `messages/${isOldPackage ? '' : 'c'}${channelID}/channel.json`;
+				const channelMessagesPath = cwd + `messages/${isOldPackage ? '' : 'c'}${channelID}/messages.csv`;
 
 				Promise.all([
 					fs.readFileSync(channelDataPath),
