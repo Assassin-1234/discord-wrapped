@@ -1,11 +1,11 @@
 # Discord Wrapped
-Discord Wrapped is a project started by [Face](https://github.com/face-hh) (visuals/code) and [AssassiN](https://github.com/Assassin-1234) (code);
+Discord Wrapped is a project started by [Face](https://github.com/face-hh) and [AssassiN](https://github.com/Assassin-1234)
 
 ![image](https://user-images.githubusercontent.com/69168154/219751642-7564f86d-2a17-4b30-b9cb-13cda5382448.png)
 
-Contributions are apperciated!
+Contributions are appreciated!
 
-# Installation
+# Installation 📑
 
 1. Download the `.zip` of the repository, or use `git clone`
 2. Unzip & `cd` into the project.
@@ -19,10 +19,12 @@ Contributions are apperciated!
 
 In case of errors/questions, please join the Discord server [here](https://discord.gg/W98yWga6YK) or create an issue.
 
-# Contribution
+# Contribution 🧪
 Pull requests are apperciated!
 - Do not modify the `audio.mp3`
 - Do not push your own data package, please.
 
-# License
+# License 📖
 The OSS project is under an Apache license.
+
+# Star the repository if you like it! help us reach more people 🌟
