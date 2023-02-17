@@ -77,10 +77,10 @@ module.exports = async () => {
 
 	// UTILITY FUNCTIONS
 	async function fetchEmojiBuffer(emoji) {
-		const codepoint = Array.from(emoji)
+		let codepoint = Array.from(emoji)
 			.map((char) => char.codePointAt(0).toString(16))
 			.join('-');
-
+		if(codepoint == '1f979-1f979-1f979') codepoint = '1f614';
 		const url = `https://emoji.aranja.com/static/emoji-data/img-twitter-72/${codepoint}.png`;
 
 		const response = await axios.get(url, { responseType: 'arraybuffer' });
@@ -202,9 +202,8 @@ module.exports = async () => {
 
 				array.forEach((x) => {
 					if (x.id) return;
-
-					const emojiname = ghEmoji.namesOf(x.name)[0]
-						.replace('+1', 'thumbs_up');
+					const emojiname = ghEmoji.namesOf(x.name)[0] ? ghEmoji.namesOf(x.name)[0] : 'unknown';
+					emojiname.replace('+1', 'thumbs_up');
 
 					if (emojiname.length >= 7) {
 						x.name = emojiname.slice(0, 7) + '...';

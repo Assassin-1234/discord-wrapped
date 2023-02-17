@@ -1,4 +1,4 @@
-const cwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/website/package/';
+const cwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/package/';
 
 const messagesPath = cwd + 'messages';
 
