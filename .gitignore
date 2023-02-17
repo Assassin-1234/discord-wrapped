@@ -4,3 +4,5 @@ package.zip
 .env
 ffmpeg.exe
 ffprobe.exe
+src/output
+wrapped.mp4
