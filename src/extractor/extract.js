@@ -91,7 +91,7 @@ function fetchMessages() {
 		const filePath = path.join(messagesPath, file, 'messages.csv');
 		const data = fs.readFileSync(filePath, 'utf-8');
 
-		const lines = data.split('\n');
+		const lines = data.split('\n').slice(1);
 		lines.forEach(function(line) {
 			const parts = line.split(',');
 
