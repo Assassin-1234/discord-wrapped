@@ -101,8 +101,17 @@ module.exports = async () => {
 	async function fetchStickerImage(id) {
 		const url = `https://cdn.discordapp.com/stickers/${id}.png`;
 
-		const response = await axios.get(url, { responseType: 'arraybuffer' });
-		return response.data;
+		// eslint-disable-next-line no-async-promise-executor
+		return new Promise(async (resolve) => {
+			try {
+				const response = await axios.get(url, { responseType: 'arraybuffer' });
+				resolve(response.data);
+			}
+			catch(e) {
+				const response = await fs.readFileSync('./src/assets/no_sticker.png');
+				resolve(Buffer.from(response.buffer, 'utf-8'));
+			}
+		});
 	}
 	async function fetchTenorGIF(url) {
 		const response = await axios.get(url, { responseType: 'arraybuffer' });
