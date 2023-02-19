@@ -24,7 +24,7 @@ const coordinates = [
 	{ x: 1429, y: 485, w: 372, h: 372 },
 ];
 const emojisCoordinates = [
-	[204, 515, 257, 257],
+	[139, 442, 373, 373],
 	[1215, 40, 279, 279],
 	[1582, 228, 279, 279],
 	[1213, 442, 279, 279],
@@ -37,7 +37,7 @@ const gamesCoordinates = [
 	[1289, 308, 304, 304],
 ];
 const stickersCoordinates = [
-	[903, 327, 192, 192],
+	[799, 220, 380, 380],
 	[196, 680, 275, 275],
 	[636, 680, 275, 275],
 	[1076, 680, 275, 275],
@@ -45,31 +45,31 @@ const stickersCoordinates = [
 ];
 const wordsCoordinates = {
 	name: [
-		[630, 364],
-		[630, 495],
-		[630, 626],
-		[630, 758],
-		[630, 890],
+		[590, 316],
+		[590, 447],
+		[590, 578],
+		[590, 710],
+		[590, 842],
 	],
 	count: [
-		[1230, 364],
-		[1230, 495],
-		[1230, 626],
-		[1230, 758],
-		[1230, 890],
+		[1200, 314],
+		[1200, 445],
+		[1200, 576],
+		[1200, 708],
+		[1200, 840],
 	],
 };
 const summaryCoordinates = [
-	[960, 207],
-	[975, 291],
-	[876, 373],
-	[870, 460],
-	[860, 552],
-	[980, 634],
-	[940, 707],
-	[1030, 780],
-	[1150, 854],
-	[1027, 937],
+	[950, 215],
+	[1120, 291],
+	[980, 373],
+	[950, 463],
+	[955, 556],
+	[1120, 641],
+	[1070, 719],
+	[1190, 792],
+	[1350, 868],
+	[1180, 945],
 ];
 
 module.exports = async () => {
@@ -242,7 +242,7 @@ module.exports = async () => {
 		ctx.strokestyle = '#000000';
 		ctx.lineWidth = '7';
 
-		ctx.strokeText(text, 75, 500);
+		ctx.strokeText(text, 170, 500);
 
 		const buffer = canvas.toBuffer();
 
@@ -300,8 +300,13 @@ module.exports = async () => {
 		for (let i = 0; i < array.length; i++) {
 			const cdnts = wordsCoordinates.name[i];
 			const cdnts2 = wordsCoordinates.count[i];
+			let word = array[i][0];
 
-			ctx.fillText(array[i][0], cdnts[0], cdnts[1]);
+			if (word.length >= 7) {
+				word = word.slice(0, 7) + '...';
+			}
+
+			ctx.fillText(word, cdnts[0], cdnts[1]);
 			ctx.fillText(array[i][1], cdnts2[0], cdnts2[1]);
 		}
 
