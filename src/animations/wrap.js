@@ -178,7 +178,12 @@ module.exports = async () => {
 
 			ctx.drawImage((await Canvas.loadImage(frameData)), coordinates[i].x, coordinates[i].y, coordinates[i].w, coordinates[i].h);
 
-			fs.rmSync(filename);
+			try {
+				await fs.rmSync(filename);
+			}
+			catch(e) {
+				return i++;
+			}
 			i++;
 		});
 		await Promise.all(pagePromises);
@@ -210,17 +215,19 @@ module.exports = async () => {
 				ctx.font = '75px Arial';
 
 				array.forEach((x) => {
-					if (x.id) return;
-					const emojiname = ghEmoji.namesOf(x.name)[0] ? ghEmoji.namesOf(x.name)[0] : 'unknown';
+					let emojiname = ghEmoji.namesOf(x.name)[0] ? ghEmoji.namesOf(x.name)[0] : 'unknown';
 					emojiname.replace('+1', 'thumbs_up');
 
+					if (emojiname === 'unknown' && x.id) emojiname = x.name;
+
 					if (emojiname.length >= 7) {
-						x.name = emojiname.slice(0, 7) + '...';
+						x.name = emojiname.slice(0, 7) + '.';
 					}
 					else {
 						x.name = emojiname;
 					}
 				});
+
 				ctx.fillText(array[0].name, 780, 430);
 				ctx.fillText(array[1].name, 780, 530);
 				ctx.fillText(array[2].name, 780, 630);
