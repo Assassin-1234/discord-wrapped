@@ -238,7 +238,7 @@ module.exports = async () => {
 		const image = 'image5';
 		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/${image}.png`)), 0, 0);
 
-		ctx.font = '275px Sans';
+		ctx.font = '235px Sans';
 		ctx.strokestyle = '#000000';
 		ctx.lineWidth = '7';
 
