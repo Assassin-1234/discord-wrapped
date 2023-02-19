@@ -30,3 +30,7 @@ Pull requests are apperciated!
 The OSS project is under an Apache license.
 
 # Star the repository if you like it! help us reach more people 🌟
+
+# Contributors 🤼
+
+![image](https://contrib.rocks/image?repo=Assassin-1234/discord-wrapped)
