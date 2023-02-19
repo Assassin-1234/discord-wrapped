@@ -3,7 +3,7 @@ Discord Wrapped is a project started by [Face](https://github.com/face-hh) and [
 
 Redesign by [RedVortex](https://github.com/RedVortexDev)
 
-![image](https://user-images.githubusercontent.com/69168154/219751642-7564f86d-2a17-4b30-b9cb-13cda5382448.png)
+![image](https://github.com/Assassin-1234/discord-wrapped/blob/main/src/assets/image1.png)
 
 Contributions are appreciated!
 
