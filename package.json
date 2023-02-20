@@ -22,6 +22,7 @@
     "path": "^0.12.7",
     "puppeteer": "^19.6.3",
     "request": "^2.88.2",
+    "sharp": "^0.31.3",
     "shotstack-sdk": "^0.2.2",
     "snake-case": "^3.0.4",
     "unzipper": "^0.10.11"
