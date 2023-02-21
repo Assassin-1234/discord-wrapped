@@ -2,6 +2,7 @@ const cwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/src/';
 const pwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/';
 
 const Canvas = require('canvas');
+const sharp = require('sharp');
 
 const fs = require('fs');
 const editly = require('editly');
@@ -96,10 +97,18 @@ module.exports = async () => {
 			.map((char) => char.codePointAt(0).toString(16))
 			.join('-');
 		if(codepoint == '1f979-1f979-1f979') codepoint = '1f614';
-		const url = `https://emoji.aranja.com/static/emoji-data/img-twitter-72/${codepoint}.png`;
+		
+		// request twitter api for 512x512px twemoji
+		const url = `https://abs.twimg.com/emoji/v2/svg/${codepoint}.svg`
 
 		const response = await axios.get(url, { responseType: 'arraybuffer' });
-		return response.data;
+		
+		// convert svg to 512x512px png
+		const buffer = await sharp(response.data)
+			.resize(512, 512)
+			.png()
+			.toBuffer();
+		return buffer;
 	}
 	async function fetchDiscordEmojiBuffer(id) {
 		const url = `https://cdn.discordapp.com/emojis/${id}.png`;
@@ -271,6 +280,7 @@ module.exports = async () => {
 		fs.writeFileSync(cwd + 'output/' + image + '.png', buffer);
 	}
 	async function createMostPlayedGames(array) {
+		console.log(array)
 		const canvas = Canvas.createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
@@ -364,17 +374,17 @@ module.exports = async () => {
 	}
 
 	// FRAMES
-	await createRecentGIFs(data.most_recent_favorite_gifs);
+	await createRecentGIFs(data.most_recent_favorite_gifs || []);
 	console.log('Finished creating 1st frame');
-	await createMostUsedEmojis(data.most_used_emojis);
+	await createMostUsedEmojis(data.most_used_emojis || []);
 	console.log('Finished creating 2nd frame');
-	await createMoneyCount(data.total_spend);
+	await createMoneyCount(data.total_spend || 0);
 	console.log('Finished creating 3rd frame');
-	await createMostPlayedGames(data.most_played_games);
+	await createMostPlayedGames(data.most_played_games || []);
 	console.log('Finished creating 4th frame');
-	await createMostUsedStickers(data.most_used_stickers);
+	await createMostUsedStickers(data.most_used_stickers || []);
 	console.log('Finished creating 5th frame');
-	await createMostUsedWords(data.most_used_words);
+	await createMostUsedWords(data.most_used_words || []);
 	console.log('Finished creating 6th frame');
 
 	// STATISTICS QUICKFIRE
