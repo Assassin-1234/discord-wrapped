@@ -6,8 +6,23 @@ const Canvas = require('canvas');
 const fs = require('fs');
 const editly = require('editly');
 
-const ffmpegPath = pwd + 'ffmpeg.exe';
-const ffprobePath = pwd + 'ffprobe.exe';
+function getToolPath(tool) {
+	[
+		`${pwd}${tool}.exe`,
+		`${pwd}${tool}`,
+		`/usr/bin/${tool}`,
+		tool,
+	].forEach((path) => {
+		if (fs.existsSync(path)) {
+			return path;
+		}
+	});
+	console.error(`Could not find ${tool}! Please check if you've downloaded it (or just read the README)!`);
+	process.exit(1);
+}
+
+const ffmpegPath = getToolPath('ffmpeg');
+const ffprobePath = getToolPath('ffprobe');
 const audioFilePath = pwd + 'audio.mp3';
 
 const ffmpeg = require('fluent-ffmpeg');
