@@ -1,10 +1,7 @@
-const cwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/package/';
-
-const messagesPath = cwd + 'messages';
+const path = require('path');
 
 const fs = require('fs');
 const axios = require('axios');
-const path = require('path');
 const { snakeCase } = require('snake-case');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const eventsData = [
@@ -35,6 +32,7 @@ const readAnalyticsFile = (filePath) => {
 			openCount: 0,
 		};
 	}
+
 	return new Promise((resolve, reject) => {
 		const eventsOccurrences = {};
 		for (const eventName of eventsData) {
@@ -42,12 +40,19 @@ const readAnalyticsFile = (filePath) => {
 		}
 
 		const stream = fs.createReadStream(filePath, { encoding: 'utf8' });
-		let str = '';
 
 		console.log('Currently processing the events, might take some time!');
 
+		const stats = fs.statSync(filePath);
+
+		let str = '';
+		let bytesRead = 0;
+		const maxBytes = Math.floor(stats.size);
+
 		stream.on('data', (chunk) => {
 			str += chunk;
+			bytesRead += chunk.length;
+
 			for (const event of Object.keys(eventsOccurrences)) {
 				const eventName = snakeCase(event);
 				// eslint-disable-next-line no-constant-condition
@@ -58,6 +63,10 @@ const readAnalyticsFile = (filePath) => {
 					}
 					str = str.slice(ind + eventName.length);
 					eventsOccurrences[event]++;
+
+					const percentage = Math.round((bytesRead / maxBytes) * 100);
+					console.clear();
+					console.log(`Processed ${percentage}% of Analytics data (${bytesRead} / ${maxBytes})...`);
 				}
 			}
 		});
@@ -83,6 +92,8 @@ const readAnalyticsFile = (filePath) => {
 	});
 };
 function fetchMessages() {
+	const messagesPath = path.resolve('package/messages');
+
 	const files = fs.readdirSync(messagesPath);
 
 	files.forEach(file => {
@@ -167,7 +178,7 @@ async function returnGameData(arr) {
 module.exports = {
 
 	async getUserInfo(dir) {
-		const rawData = await fs.readFileSync(cwd + dir, 'utf-8').toString();
+		const rawData = await fs.readFileSync(path.resolve(dir), 'utf-8').toString();
 		const data = JSON.parse(rawData);
 		const stickers = data.settings.frecency.stickerFrecency.stickers;
 		// const scommands = data.settings.frecency.applicationCommandFrecency.applicationCommands;
@@ -192,13 +203,16 @@ module.exports = {
 
 		const mostPlayedGames = await returnGameData(sortedActivities.slice(0, 5));
 
-		const files = fs.existsSync(cwd + 'activity/analytics') ? await fs.readdirSync(cwd + 'activity/analytics') : [];
+		const files = fs.existsSync(path.resolve('package/activity/analytics'))
+			? await fs.readdirSync(path.resolve('package/activity/analytics'))
+			: [];
+
 		const filePath = files.find((file) => /events-[0-9]{4}-[0-9]{5}-of-[0-9]{5}\.json/.test(file));
-		const statistics = await readAnalyticsFile(cwd + 'activity/analytics/' + filePath);
+		const statistics = await readAnalyticsFile(path.resolve('package/activity/analytics/', filePath));
 
 		const messagesPathRegex = /c?([0-9]{16,32})/;
 
-		const channelsIDsFile = fs.readdirSync(messagesPath);
+		const channelsIDsFile = fs.readdirSync(path.resolve('package/messages'));
 
 		// Packages before 06-12-2021 does not have the leading "c" before the channel ID
 		const isOldPackage = !channelsIDsFile[0].includes('c');
@@ -208,8 +222,8 @@ module.exports = {
 		await Promise.all(channelsIDs.map((channelID) => {
 			return new Promise((resolve) => {
 
-				const channelDataPath = cwd + `messages/${isOldPackage ? '' : 'c'}${channelID}/channel.json`;
-				const channelMessagesPath = cwd + `messages/${isOldPackage ? '' : 'c'}${channelID}/messages.csv`;
+				const channelDataPath = path.resolve(`package/messages/${isOldPackage ? '' : 'c'}${channelID}/channel.json`);
+				const channelMessagesPath = path.resolve(`package/messages/${isOldPackage ? '' : 'c'}${channelID}/messages.csv`);
 
 				Promise.all([
 					fs.readFileSync(channelDataPath),
