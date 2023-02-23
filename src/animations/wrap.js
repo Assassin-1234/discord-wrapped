@@ -1,4 +1,6 @@
-const path = require('path');
+const cwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/src/';
+const pwd = process.cwd().split('discord-wrapped')[0] + 'discord-wrapped/';
+
 const Canvas = require('canvas');
 const sharp = require('sharp');
 
@@ -6,26 +8,23 @@ const fs = require('fs');
 const editly = require('editly');
 
 function getToolPath(tool) {
-	const pathsToCheck = [
-		`${tool}.exe`,
+	[
+		`${pwd}${tool}.exe`,
+		`${pwd}${tool}`,
 		`/usr/bin/${tool}`,
 		tool,
-	];
-
-	for (let i = 0; i < pathsToCheck.length; i++) {
-		const filePath = path.resolve(pathsToCheck[i]);
-		if (fs.existsSync(filePath)) {
-			return filePath;
+	].forEach((path) => {
+		if (fs.existsSync(path)) {
+			return path;
 		}
-	}
-
-	console.error(`Could not find: ${tool}! Please check if you've downloaded it (or just read the README)!`);
+	});
+	console.error(`Could not find ${tool}! Please check if you've downloaded it (or just read the README)!`);
 	process.exit(1);
 }
 
 const ffmpegPath = getToolPath('ffmpeg');
 const ffprobePath = getToolPath('ffprobe');
-const audioFilePath = path.resolve('audio.mp3');
+const audioFilePath = pwd + 'audio.mp3';
 
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
@@ -90,17 +89,20 @@ const summaryCoordinates = [
 ];
 
 module.exports = async () => {
-	const data = await getUserInfo('package/account/user.json');
+	const data = await getUserInfo('account/user.json');
 
 	// UTILITY FUNCTIONS
 	async function fetchEmojiBuffer(emoji) {
-		const codepoint = Array.from(emoji).map((char) => char.codePointAt(0).toString(16))[0];
-
+		let codepoint = Array.from(emoji)
+			.map((char) => char.codePointAt(0).toString(16))
+			.join('-');
+		if(codepoint == '1f979-1f979-1f979') codepoint = '1f614';
+		
 		// request twitter api for 512x512px twemoji
-		const url = `https://abs.twimg.com/emoji/v2/svg/${codepoint}.svg`;
+		const url = `https://abs.twimg.com/emoji/v2/svg/${codepoint}.svg`
 
 		const response = await axios.get(url, { responseType: 'arraybuffer' });
-
+		
 		// convert svg to 512x512px png
 		const buffer = await sharp(response.data)
 			.resize(512, 512)
@@ -186,7 +188,7 @@ module.exports = async () => {
 
 		let i = 0;
 
-		ctx.drawImage((await Canvas.loadImage(path.resolve(`src/assets/${image}.png`))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/${image}.png`)), 0, 0);
 
 		const pagePromises = tenorLinks.map(async (tenorLink) => {
 			tenorLink = tenorLink.src;
@@ -211,13 +213,13 @@ module.exports = async () => {
 		await Promise.all(pagePromises);
 
 		const buffer = canvas.toBuffer();
-		fs.writeFileSync(path.resolve(`src/output/${image}.png`), buffer);
+		fs.writeFileSync(`${cwd}output/${image}.png`, buffer);
 	}
 	async function createMostUsedEmojis(array) {
 		const canvas = Canvas.createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await Canvas.loadImage(path.resolve('src/assets/image4.png'))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/image4.png`)), 0, 0);
 
 		for (let i = 0; i < array.length; i++) {
 			const emojiObj = array[i];
@@ -257,7 +259,7 @@ module.exports = async () => {
 				ctx.fillText(array[4].name, 780, 830);
 
 				const outputBuffer = canvas.toBuffer();
-				fs.writeFileSync(path.resolve('src/output/image4.png'), outputBuffer);
+				fs.writeFileSync(cwd + 'output/image4.png', outputBuffer);
 			}
 		}
 	}
@@ -265,7 +267,7 @@ module.exports = async () => {
 		const canvas = Canvas.createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 		const image = 'image5';
-		ctx.drawImage((await Canvas.loadImage(path.resolve(`src/assets/${image}.png`))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/${image}.png`)), 0, 0);
 
 		ctx.font = '235px Sans';
 		ctx.strokestyle = '#000000';
@@ -275,13 +277,14 @@ module.exports = async () => {
 
 		const buffer = canvas.toBuffer();
 
-		fs.writeFileSync(path.resolve(`src/output/${image}.png`), buffer);
+		fs.writeFileSync(cwd + 'output/' + image + '.png', buffer);
 	}
 	async function createMostPlayedGames(array) {
+		console.log(array)
 		const canvas = Canvas.createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await Canvas.loadImage(path.resolve('src/assets/image7.png'))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/image7.png`)), 0, 0);
 		ctx.font = '40px Arial';
 		ctx.textAlign = 'center';
 		for (let i = 0; i < array.length; i++) {
@@ -299,13 +302,13 @@ module.exports = async () => {
 		}
 
 		const buffer = canvas.toBuffer();
-		fs.writeFileSync(path.resolve('src/output/image7.png'), buffer);
+		fs.writeFileSync(cwd + 'output/image7.png', buffer);
 	}
 	async function createMostUsedStickers(array) {
 		const canvas = Canvas.createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await Canvas.loadImage(path.resolve('src/assets/image9.png'))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/image9.png`)), 0, 0);
 		ctx.font = '40px Arial';
 		ctx.textAlign = 'center';
 		for (let i = 0; i < array.length; i++) {
@@ -317,13 +320,13 @@ module.exports = async () => {
 		}
 
 		const buffer = canvas.toBuffer();
-		fs.writeFileSync(path.resolve('src/output/image9.png'), buffer);
+		fs.writeFileSync(cwd + 'output/image9.png', buffer);
 	}
 	async function createMostUsedWords(array) {
 		const canvas = Canvas.createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await Canvas.loadImage(path.resolve('src/assets/image10.png'))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/image10.png`)), 0, 0);
 		ctx.font = 'bold 100px Arial';
 
 		for (let i = 0; i < array.length; i++) {
@@ -340,7 +343,7 @@ module.exports = async () => {
 		}
 
 		const buffer = canvas.toBuffer();
-		fs.writeFileSync(path.resolve('src/output/image10.png'), buffer);
+		fs.writeFileSync(cwd + 'output/image10.png', buffer);
 	}
 	async function createSummary(array) {
 		const canvas = Canvas.createCanvas(1920, 1080);
@@ -348,7 +351,7 @@ module.exports = async () => {
 		const values = Object.values(array);
 		const keys = Object.keys(array);
 
-		ctx.drawImage((await Canvas.loadImage(path.resolve('src/assets/image11.png'))), 0, 0);
+		ctx.drawImage((await Canvas.loadImage(`${cwd}assets/image11.png`)), 0, 0);
 		ctx.font = 'bold 50px Arial';
 
 		for (let i = 0; i < values.length; i++) {
@@ -367,7 +370,7 @@ module.exports = async () => {
 		}
 
 		const buffer = canvas.toBuffer();
-		fs.writeFileSync(path.resolve('src/output/image11.png'), buffer);
+		fs.writeFileSync(cwd + 'output/image11.png', buffer);
 	}
 
 	// FRAMES
@@ -402,55 +405,55 @@ module.exports = async () => {
 			{
 				duration: 2.5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/assets/image1.png') },
+					{ type: 'image', path: cwd + 'assets/image1.png' },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image3.png') },
+					{ type: 'image', path: cwd + 'output/image3.png' },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image4.png') },
+					{ type: 'image', path: cwd + 'output/image4.png' },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image5.png') },
+					{ type: 'image', path: cwd + 'output/image5.png' },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image7.png') },
+					{ type: 'image', path: cwd + 'output/image7.png' },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image9.png') },
+					{ type: 'image', path: cwd + 'output/image9.png' },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image10.png') },
+					{ type: 'image', path: cwd + 'output/image10.png' },
 				],
 			},
 			{
 				duration: 10,
 				layers: [
-					{ type: 'image', path: path.resolve('src/output/image11.png') },
+					{ type: 'image', path: cwd + 'output/image11.png' },
 				],
 			},
 			{
 				duration: 6,
 				layers: [
-					{ type: 'image', path: path.resolve('src/assets/image6.png') },
+					{ type: 'image', path: cwd + 'assets/image6.png' },
 				],
 			},
 		],
