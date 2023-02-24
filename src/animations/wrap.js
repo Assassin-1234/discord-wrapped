@@ -3,6 +3,7 @@ const Canvas = require('canvas');
 const sharp = require('sharp');
 
 const fs = require('fs');
+const editly = require('editly');
 
 function getToolPath(tool) {
 	const pathsToCheck = [
@@ -388,7 +389,6 @@ module.exports = async () => {
 	console.log('Finished creating 7th frame');
 
 	// EDITING
-	const editly = (await import('editly')).default;
 
 	editly({
 		// enableFfmpegLog: true,
