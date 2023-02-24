@@ -6,3 +6,4 @@ ffmpeg.exe
 ffprobe.exe
 src/output
 wrapped.mp4
+package-lock.json
