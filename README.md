@@ -15,7 +15,7 @@ Contributions are appreciated!
 4. Unzip your Discord Data Package and rename it to `"package"`, if not already.
 5. Install FFMPEG and FFPROBE [here](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z)
 6. Unzip the above and paste it inside this folder (i.e. `discord-wrapped/ffmpeg.exe`, `discord-wrapped/ffprobe.exe`)
-7. Run `npm i`
+7. Run `npm i` or `npm ci`
 8. Run `node .`
 9. Read the logs.
 
