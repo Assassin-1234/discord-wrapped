@@ -21,14 +21,15 @@ const readAnalyticsFile = (filePath) => {
 		console.log('WARNING: No analytics file found, likely privacy protection is on.');
 		return {
 			joinVoiceChannelCount: 0,
-			sendMessageCount: 0,
-			addReactionCount: 0,
-			dmChannelCount: 0,
-			channelCount: 0,
 			joinCallCount: 0,
+			channelCount: 0,
+			dmChannelCount: 0,
 			notificationCount: 0,
+
+			sendMessageCount: 0,
 			messageEditedCount: 0,
 			slashCommandUsedCount: 0,
+			addReactionCount: 0,
 			openCount: 0,
 		};
 	}
@@ -74,14 +75,15 @@ const readAnalyticsFile = (filePath) => {
 		stream.on('end', () => {
 			resolve({
 				joinVoiceChannelCount: eventsOccurrences.joinVoiceChannel,
-				sendMessageCount: eventsOccurrences.sendMessage,
-				addReactionCount: eventsOccurrences.addReaction,
-				dmChannelCount: 0,
-				channelCount: 0,
 				joinCallCount: eventsOccurrences.joinCall,
+				channelCount: 0,
+				dmChannelCount: 0,
 				notificationCount: eventsOccurrences.notificationClicked,
+
+				sendMessageCount: eventsOccurrences.sendMessage,
 				messageEditedCount: eventsOccurrences.messageEdited,
 				slashCommandUsedCount: eventsOccurrences.slashCommandUsed,
+				addReactionCount: eventsOccurrences.addReaction,
 				openCount: eventsOccurrences.appOpened,
 			});
 		});
@@ -207,7 +209,7 @@ module.exports = {
 			? await fs.readdirSync(path.resolve('package/activity/analytics'))
 			: [];
 
-		const filePath = files.find((file) => /events-[0-9]{4}-[0-9]{5}-of-[0-9]{5}\.json/.test(file));
+		const filePath = files.find((file) => /events-[0-9]{4}-[0-9]{5}-of-[0-9]{5}\.json/.test(file)) || 'not_found';
 		const statistics = await readAnalyticsFile(path.resolve('package/activity/analytics/', filePath));
 
 		const messagesPathRegex = /c?([0-9]{16,32})/;

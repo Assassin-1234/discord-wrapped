@@ -3,7 +3,6 @@ const Canvas = require('canvas');
 const sharp = require('sharp');
 
 const fs = require('fs');
-const editly = require('editly');
 
 function getToolPath(tool) {
 	const pathsToCheck = [
@@ -36,57 +35,57 @@ const { getUserInfo } = require('../extractor/extract');
 
 // COORDINATES
 const coordinates = [
-	{ x: 141, y: 485, w: 372, h: 372 },
-	{ x: 774, y: 485, w: 372, h: 372 },
-	{ x: 1429, y: 485, w: 372, h: 372 },
+	{ x: 255, y: 402, w: 384, h: 384 },
+	{ x: 768, y: 402, w: 384, h: 384 },
+	{ x: 1280, y: 402, w: 384, h: 384 },
 ];
 const emojisCoordinates = [
-	[139, 442, 373, 373],
-	[1215, 40, 279, 279],
-	[1582, 228, 279, 279],
-	[1213, 442, 279, 279],
-	[1584, 692, 279, 279],
+	[110, 460, 290, 290],
+	[1250, 325, 235, 235],
+	[1570, 325, 235, 235],
+	[1240, 655, 235, 235],
+	[1564, 655, 235, 235],
 ];
 const gamesCoordinates = [
-	[288, 308, 304, 304],
-	[619, 308, 304, 304],
-	[952, 308, 304, 304],
-	[1289, 308, 304, 304],
+	[360, 323, 241, 241],
+	[679, 323, 241, 241],
+	[999, 323, 241, 241],
+	[1319, 323, 241, 241],
 ];
 const stickersCoordinates = [
-	[799, 220, 380, 380],
-	[196, 680, 275, 275],
-	[636, 680, 275, 275],
-	[1076, 680, 275, 275],
-	[1516, 680, 275, 275],
+	[840, 292, 285, 295],
+	[385, 660, 234, 234],
+	[706, 660, 234, 234],
+	[1025, 660, 234, 234],
+	[1345, 660, 234, 234],
 ];
 const wordsCoordinates = {
 	name: [
-		[590, 316],
-		[590, 447],
-		[590, 578],
-		[590, 710],
-		[590, 842],
+		[610, 364],
+		[610, 467],
+		[610, 570],
+		[610, 673],
+		[610, 776],
 	],
 	count: [
-		[1200, 314],
-		[1200, 445],
-		[1200, 576],
-		[1200, 708],
-		[1200, 840],
+		[1255, 364],
+		[1255, 467],
+		[1255, 570],
+		[1255, 673],
+		[1255, 776],
 	],
 };
 const summaryCoordinates = [
-	[950, 215],
-	[1120, 291],
-	[980, 373],
-	[950, 463],
-	[955, 556],
-	[1120, 641],
-	[1070, 719],
-	[1190, 792],
-	[1350, 868],
-	[1180, 945],
+	[560, 380],
+	[730, 495],
+	[580, 613],
+	[600, 730],
+	[680, 845],
+	[1560, 370],
+	[1612, 485],
+	[1625, 604],
+	[1420, 717],
+	[1590, 836],
 ];
 
 module.exports = async () => {
@@ -242,19 +241,19 @@ module.exports = async () => {
 
 					if (emojiname === 'unknown' && x.id) emojiname = x.name;
 
-					if (emojiname.length >= 7) {
-						x.name = emojiname.slice(0, 7) + '.';
+					if (emojiname.length >= 11) {
+						x.name = emojiname.slice(0, 11) + '.';
 					}
 					else {
 						x.name = emojiname;
 					}
 				});
 
-				ctx.fillText(array[0].name, 780, 430);
-				ctx.fillText(array[1].name, 780, 530);
-				ctx.fillText(array[2].name, 780, 630);
-				ctx.fillText(array[3].name, 780, 730);
-				ctx.fillText(array[4].name, 780, 830);
+				ctx.fillText(array[0].name, 610, 430);
+				ctx.fillText(array[1].name, 610, 530);
+				ctx.fillText(array[2].name, 610, 630);
+				ctx.fillText(array[3].name, 610, 730);
+				ctx.fillText(array[4].name, 610, 830);
 
 				const outputBuffer = canvas.toBuffer();
 				fs.writeFileSync(path.resolve('src/output/image4.png'), outputBuffer);
@@ -271,7 +270,7 @@ module.exports = async () => {
 		ctx.strokestyle = '#000000';
 		ctx.lineWidth = '7';
 
-		ctx.strokeText(text, 170, 500);
+		ctx.strokeText(text, 115, 500);
 
 		const buffer = canvas.toBuffer();
 
@@ -295,7 +294,7 @@ module.exports = async () => {
 			}
 
 			ctx.drawImage(image, cdnts[0], cdnts[1], cdnts[2], cdnts[3]);
-			ctx.fillText(name, cdnts[0] + 147, cdnts[1] - 15);
+			ctx.fillText(name, cdnts[0] + 122, cdnts[1] - 18);
 		}
 
 		const buffer = canvas.toBuffer();
@@ -324,15 +323,15 @@ module.exports = async () => {
 		const ctx = canvas.getContext('2d');
 
 		ctx.drawImage((await Canvas.loadImage(path.resolve('src/assets/image10.png'))), 0, 0);
-		ctx.font = 'bold 100px Arial';
+		ctx.font = 'bold 80px Arial';
 
 		for (let i = 0; i < array.length; i++) {
 			const cdnts = wordsCoordinates.name[i];
 			const cdnts2 = wordsCoordinates.count[i];
 			let word = array[i][0];
 
-			if (word.length >= 7) {
-				word = word.slice(0, 7) + '...';
+			if (word.length >= 10) {
+				word = word.slice(0, 10) + '..';
 			}
 
 			ctx.fillText(word, cdnts[0], cdnts[1]);
@@ -389,6 +388,7 @@ module.exports = async () => {
 	console.log('Finished creating 7th frame');
 
 	// EDITING
+	const editly = (await import('editly')).default;
 
 	editly({
 		// enableFfmpegLog: true,
