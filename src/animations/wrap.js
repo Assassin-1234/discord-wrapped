@@ -3,7 +3,6 @@ const Canvas = require('canvas');
 const sharp = require('sharp');
 
 const fs = require('fs');
-const editly = require('editly');
 
 function getToolPath(tool) {
 	const pathsToCheck = [
@@ -36,16 +35,16 @@ const { getUserInfo } = require('../extractor/extract');
 
 // COORDINATES
 const coordinates = [
-	{ x: 141, y: 485, w: 372, h: 372 },
-	{ x: 774, y: 485, w: 372, h: 372 },
-	{ x: 1429, y: 485, w: 372, h: 372 },
+	{ x: 260, y: 400, w: 372, h: 372 },
+	{ x: 774, y: 400, w: 372, h: 372 },
+	{ x: 1282, y: 400, w: 372, h: 372 },
 ];
 const emojisCoordinates = [
-	[139, 442, 373, 373],
-	[1215, 40, 279, 279],
-	[1582, 228, 279, 279],
-	[1213, 442, 279, 279],
-	[1584, 692, 279, 279],
+	[110, 460, 290, 290],
+	[1250, 325, 235, 235],
+	[1570, 325, 235, 235],
+	[1240, 655, 235, 235],
+	[1564, 655, 235, 235],
 ];
 const gamesCoordinates = [
 	[288, 308, 304, 304],
@@ -389,6 +388,7 @@ module.exports = async () => {
 	console.log('Finished creating 7th frame');
 
 	// EDITING
+	const editly = (await import('editly')).default;
 
 	editly({
 		// enableFfmpegLog: true,
