@@ -191,7 +191,7 @@ module.exports = {
 		const sortedActivities = data.user_activity_application_statistics
 			.sort((a, b) => b.total_duration - a.total_duration);
 		const totalSpent = (data.payments.reduce((total, payment) => payment.status === 1 ? total + payment.amount : total, 0) / 100).toFixed(2);
-		const lastFavGifs = Object.values(data.settings.frecency.favoriteGifs.gifs).sort((a, b) => b.order - a.order).slice(0, 5);
+		const lastFavGifs = Object.values(data.settings.frecency.favoriteGifs.gifs ?? []).sort((a, b) => b.order - a.order).slice(0, 5);
 		const favStickers = Object.keys(stickers)
 			.sort((a, b) => stickers[b].totalUses - stickers[a].totalUses)
 			.map(key => ({ name: key, ...stickers[key] }));
