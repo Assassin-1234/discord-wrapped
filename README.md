@@ -1,7 +1,7 @@
 # Discord Wrapped
 Discord Wrapped is a project started by [Face](https://github.com/face-hh) and [AssassiN](https://github.com/Assassin-1234)
 
-Redesign by [RedVortex](https://github.com/RedVortexDev)
+Redesign by [Arnav](https://github.com/arnav-kr)
 
 ![image](https://github.com/Assassin-1234/discord-wrapped/blob/main/src/assets/image1.png)
 
