@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts --watch src",
-    "build": "tsc --watch"
+    "build": "tsc"
   },
   "devDependencies": {
     "eslint": "^8.36.0",
