@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://discordwrapped.com"><img src="./backend/src/generator/src/assets/opening.png" alt="Discord Wrapped" width="500" /></a>
+  <a href="https://discordwrapped.com"><img src="./backend/src/generator/src/assets/opening.png" alt="Discord Wrapped" width="500" style="border-radius: 12px" /></a>
 </p>
 
 <p align="center">
