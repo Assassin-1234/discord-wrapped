@@ -1,6 +1,6 @@
 import '../index.css';
 import clouds from '../assets/clouds.svg';
-import { DragEvent, useState, useRef } from 'react';
+import { DragEvent, useState, useRef } from 'reactno
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IconContext } from 'react-icons/lib';
@@ -246,7 +246,7 @@ function Generate() {
 							<>
 								<div className='flex flex-col items-center justify-center text-center'>
 									<h1 className='text-white text-4xl md:text-6xl mt-0 md:mt-10 font-bold'>Generation in progress</h1>
-									<p className='text-white text-xl md:text-3xl md-4 mt-2 md:mt-8 p-1 md:p-0'>We are generating your wrapped. How bigger your data package is how longer it usually takes.</p>
+									<p className='text-white text-xl md:text-3xl md-4 mt-2 md:mt-8 p-1 md:p-0'>We are generating your wrapped. The bigger your data package is, the longer it usually takes.</p>
 								</div>
 
 								<div className='flex flex-col h-full w-full items-center justify-start md:justify-center'>
