@@ -1,13 +1,13 @@
 <p align="center">
-  <a href="https://discordwrapped.com"><img src="./frontend/src/assets/banner.png" alt="Discord Wrapped" width="500" /></a>
+  <a href="https://discordwrapped.com"><img src="./backend/src/generator/src/assets/opening.png" alt="Discord Wrapped" width="500" /></a>
 </p>
 
 <p align="center">
-  <b>An insight on all the data collected by Discord, formed into a video just like Spotify Wrapped!</b>
+  An insight on all the data collected by Discord, formed into a video just like Spotify Wrapped!
 </p>
 
 # Try it out
-You can try it out on our [website](https://discordwrapped.com)
+You can try it out on [discordwrapped.com](https://discordwrapped.com).
 
 # Credits
 - [Face](https://github.com/face-hh) & [AssassiN](https://github.com/Assassin-1234) for starting the project
@@ -21,7 +21,7 @@ Pull requests are apperciated
 - Do not modify the `audio.mp3`
 - Do not push your own data package
 
-# License 📖
+# License
 This OSS project is under an Apache license.
 
 # Contributors
