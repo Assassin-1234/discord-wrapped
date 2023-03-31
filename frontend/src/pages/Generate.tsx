@@ -7,7 +7,7 @@ import { IconContext } from 'react-icons/lib';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import { BiPlay, BiFullscreen } from 'react-icons/bi';
 import { BsTwitter, BsStarFill } from 'react-icons/bs';
-import { AiOutlineStar } from 'react-icons/ai';
+import { SiKofi } from 'react-icons/si';
 
 /**
  * Confirmation page
@@ -237,7 +237,7 @@ function Generate() {
 								</button>
 
 								<button className='bg-kofi text-white text-xl p-2 md:p-4 mt-4 md:mt-10 flex items-center' onClick={() => window.open('https://ko-fi.com/assassin1234')}>
-									<AiOutlineStar className='mr-2' /> Support us
+									<SiKofi className='mr-2' /> Support us
 								</button>
 							</div>
 						</>

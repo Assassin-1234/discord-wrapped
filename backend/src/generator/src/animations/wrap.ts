@@ -130,7 +130,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 
 	const zip = new StreamZip.async({ file: `uploads/${wrappedId}.zip` });
 	await zip.extract(null, `${dir}/package`);
-	rmSync(`uploads/${wrappedId}.zip`);
+	rmSync(`uploads/${wrappedId}.zip`, { recursive: true, force: true });
 	const dataPackage = `${dir}/package`;
 	const data: any = await getUserInfo(`${dataPackage}/account/user.json`, dataPackage, progressCallback);
 
