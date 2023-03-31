@@ -54,13 +54,13 @@ function Generate() {
 		setProgress(Math.round((1 / 13) * 100));
 		setInfo('Uploading your data package');
 
-		await fetch(process.env.VITE_APP_ENV === 'development' ? `http://localhost:${process.env.VITE_BACKEND_PORT}/api/generate/upload` : '/api/generate/upload', {
+		await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/upload` : '/api/generate/upload', {
 			method: 'POST',
 			body: formData,
 		}).then(async res => {
 			const data = await res.json();
 
-			const ws = new WebSocket(process.env.VITE_APP_ENV === 'development' ? `ws://localhost:${process.env.VITE_BACKEND_PORT}/api` : `ws://${process.env.VITE_APP_URL}/api`);
+			const ws = new WebSocket(import.meta.env.VITE_APP_ENV === 'development' ? `ws://localhost:${import.meta.env.VITE_BACKEND_PORT}/api` : `ws://${import.meta.env.VITE_APP_URL}/api`);
 
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ id: data.id }));
@@ -74,7 +74,7 @@ function Generate() {
 				if (progressData.progress === 100) {
 					ws.close();
 
-					const videoResponse = await fetch(process.env.VITE_APP_ENV === 'development' ? `http://localhost:${process.env.VITE_BACKEND_PORT}/api/generate/download/${data.id}` : `/api/generate/download/${data.id}`, {
+					const videoResponse = await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/download/${data.id}` : `/api/generate/download/${data.id}`, {
 						method: 'GET',
 					});
 
