@@ -1,6 +1,6 @@
 import '../index.css';
 import clouds from '../assets/clouds.svg';
-import { DragEvent, useState, useRef } from 'reactno
+import { DragEvent, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IconContext } from 'react-icons/lib';
