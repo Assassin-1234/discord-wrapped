@@ -5,7 +5,7 @@ RUN apk update
 RUN apk add --no-progress --no-cache \ 
 curl
 ENV NODE_ENV "production"
-RUN npm install && npm install -g typescript  
+RUN npm install && npm install -g typescript http-server
 RUN npm run build
 COPY .env.example .env
 RUN rm -rf /frontend/Dockerfile /frontend/.env.example
