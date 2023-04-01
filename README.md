@@ -15,6 +15,7 @@ You can try it out on [discordwrapped.com](https://discordwrapped.com).
 - [Celendi](https://github.com/Celendi) for funding the project
 - [RedVortexDev](https://github.com/RedVortexDev) for redesign #1
 - [Arnav](https://github.com/arnav-kr) for redesign #2
+- [Zyztem](https://github.com/Zyztem) for dockerizing the project
 
 # Contributing
 Pull requests are apperciated
