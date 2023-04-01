@@ -4,7 +4,6 @@ COPY . /frontend
 RUN apk update
 RUN apk add --no-progress --no-cache \ 
 curl
-RUN adduser -D -g 'www' www
 ENV NODE_ENV "production"
 RUN npm install && npm install -g typescript  
 RUN npm run build
