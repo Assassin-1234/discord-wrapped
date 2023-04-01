@@ -27,7 +27,7 @@ body {
     margin: 0;
 
     background: linear-gradient(180deg, rgba(88, 101, 242, 1) 0%, rgba(162, 168, 233, 0.9444152661064426) 100%);
-    font-family: 'Whitney';
+    font-family: 'Whitney', sans-serif;
 }
 
 h1 {
