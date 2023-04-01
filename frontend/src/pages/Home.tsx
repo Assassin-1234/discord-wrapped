@@ -69,10 +69,11 @@ function Home() {
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Donate</h1>
 						<p className='text-xl md:text-2xl mt-2'>You can donate and thank us for our work on Ko-Fi with the button below.</p>
-						<button className='bg-kofi text-xl mt-7 p-3 flex items-center' onClick={() => window.open('https://ko-fi.com/assassin1234')}>
+						<button className='bg-kofi text-xl mt-7 p-3 flex items-center mx-auto md:mx-0' onClick={() => window.open('https://ko-fi.com/assassin1234')}>
 							<SiKofi className='mr-2' /> Support us
 						</button>
 					</div>
+
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Open-source</h1>

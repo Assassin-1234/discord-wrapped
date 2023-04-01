@@ -250,7 +250,7 @@ function Generate() {
 								</div>
 
 								<div className='flex flex-col h-full w-full items-center justify-start md:justify-center'>
-									<p className='text-3xl mb-2 mt-20 md:mt-0'>{info}</p>
+									<p className='text-2xl md:text-3xl mb-2 mt-20 md:mt-0 text-center md:text-start'>{info}</p>
 									<div className='border-white border-8 h-[10%] md:h-[15%] w-full md:w-[80%] overflow-hidden rounded-full'>
 										<div className='bg-gradient-to-b from-blurple to-blurpleLight h-full transition-all' style={{ width: `${progress}%` }}></div>
 									</div>
