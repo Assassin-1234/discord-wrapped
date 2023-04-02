@@ -1,16 +1,20 @@
-import '../index.css';
-import icon from '../assets/icon.webp';
-import clouds from '../assets/clouds.svg';
+import './index.css';
+import icon from './assets/icon.webp';
+import clouds from './assets/clouds.svg';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { BsGithub } from 'react-icons/bs';
 import { SiKofi } from 'react-icons/si';
+import { createRoot } from 'react-dom/client';
+
+const root = createRoot(document.getElementById('root') as HTMLElement);
+root.render(<Home />);
 
 /**
  * Home page
  */
 function Home() {
 	const generate = () => {
-		window.location.href = '/generate';
+		window.location.href = '/generate/';
 	};
 
 	const now = new Date();
@@ -43,7 +47,7 @@ function Home() {
 				<div className='flex flex-col items-center justify-center text-center mt-48'>
 					<h1 className='text-white text-4xl md:text-8xl font-bold'>Discord Wrapped</h1>
 					<p className='text-white text-xl md:text-3xl mt-2 p-1 md:p-0'>An insight on all the data collected by Discord, formed into a video just like Spotify Wrapped!</p>
-					<button className='text-xl mt-7' onClick={generate}>Generate Your Wrapped</button>
+					<button className='text-xl mt-7 z-10' onClick={generate}>Generate Your Wrapped</button>
 					<RiArrowDropDownLine size={70} className='mt-10 motion-safe:animate-bounce' />
 				</div>
 
@@ -53,7 +57,7 @@ function Home() {
 						<h1 className='text-2xl md:text-4xl font-bold'>Discord Data Package</h1>
 						<p className='text-xl md:text-2xl mt-2'>We need your data package to be able to generate your wrapped. Find out
                             how to request your data package <a href='https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data' aria-label='How to request your data'>in this article</a>.</p>
-						<p className='text-xl md:text-2xl mt-4'>Didn't receive your data package yet? Check out the demo on our <a href='/demo' aria-label='Check out our demo'>demo page</a>.</p>
+						<p className='text-xl md:text-2xl mt-4'>Didn't receive your data package yet? Check out the demo on our <a href='/demo/' aria-label='Check out our demo'>demo page</a>.</p>
 					</div>
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
@@ -100,5 +104,3 @@ function Home() {
 		</>
 	);
 }
-
-export default Home;

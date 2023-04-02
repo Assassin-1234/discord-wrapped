@@ -8,9 +8,13 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import { BiPlay, BiFullscreen } from 'react-icons/bi';
 import { BsTwitter, BsStarFill } from 'react-icons/bs';
 import { SiKofi } from 'react-icons/si';
+import { createRoot } from 'react-dom/client';
+
+const root = createRoot(document.getElementById('root') as HTMLElement);
+root.render(<Generate />);
 
 /**
- * Confirmation page
+ * Generate page
  */
 function Generate() {
 	const [hover, setHover] = useState<boolean>(false);
@@ -54,13 +58,15 @@ function Generate() {
 		setProgress(Math.round((1 / 13) * 100));
 		setInfo('Uploading your data package');
 
-		await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/upload` : '/api/generate/upload', {
+		console.log(import.meta.env.VITE_APP_ENV);
+
+		await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/upload` : `api.${import.meta.env.VITE_APP_URL}/api/generate/upload`, {
 			method: 'POST',
 			body: formData,
 		}).then(async res => {
 			const data = await res.json();
 
-			const ws = new WebSocket(import.meta.env.VITE_APP_ENV === 'development' ? `ws://localhost:${import.meta.env.VITE_BACKEND_PORT}/api` : `ws://${import.meta.env.VITE_APP_URL}/api`);
+			const ws = new WebSocket(import.meta.env.VITE_APP_ENV === 'development' ? `ws://localhost:${import.meta.env.VITE_BACKEND_PORT}/api` : `ws://api.${import.meta.env.VITE_APP_URL}/`);
 
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ id: data.id }));
@@ -74,7 +80,7 @@ function Generate() {
 				if (progressData.progress === 100) {
 					ws.close();
 
-					const videoResponse = await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/download/${data.id}` : `/api/generate/download/${data.id}`, {
+					const videoResponse = await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/download/${data.id}` : `api.${import.meta.env.VITE_APP_URL}/api/generate/download/${data.id}`, {
 						method: 'GET',
 					});
 
@@ -196,47 +202,50 @@ function Generate() {
 			{/* Modal */}
 			<div className='flex h-screen w-screen fixed top-0 left-0 z-20'>
 				<ToastContainer toastStyle={{ opacity: '95%', backgroundColor: '#23272A' }} />
-				<div className='m-auto bg-gray rounded-3xl p-10 w-[95%] md:w-11/12 h-[95%] md:h-5/6'>
+				<div className='m-auto bg-gray rounded-3xl p-10 w-[95%] md:w-11/12 h-[95%] md:h-5/6 flex flex-col'>
 					{videoUrl ? (
 						<>
 							<div className='flex flex-col items-center justify-center text-center'>
-								<h1 className='text-white text-4xl md:text-6xl mt-0 md:mt-10 font-bold'>Your wrapped is ready</h1>
+								<h1 className='text-white text-4xl md:text-6xl mt-0 md:mt-5 font-bold'>Your wrapped is ready</h1>
 							</div>
 
-							<div className='flex flex-col mt-5 relative items-center justify-center'>
-								<div className='relative w-full md:w-[50%]'>
-									<video className='flex rounded-xl z-0 cursor-pointer w-full h-auto' ref={videoRef} src={videoUrl} onClick={handlePlay} onEnded={handleEnded}></video>
-									<div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-white justify-center items-center ${isPlaying ? 'opacity-0' : ''}`}>
-										<button className='border-none bg-none' onClick={handlePlay}>
-											<IconContext.Provider value={{ color: 'white', size: '2em' }}>
-												<BiPlay />
-											</IconContext.Provider>
-										</button>
-									</div>
-									<div className={`absolute bottom-0 right-0 m-4 ${isPlaying ? 'opacity-0' : ''}`}>
-										<IconContext.Provider value={{ className: 'text-white text-2xl md:text-4xl cursor-pointer bg-none border-none' }}>
-											<button className='border-none bg-none' onClick={() => videoRef.current?.requestFullscreen()}>
-												<BiFullscreen />
+							<div className='flex-grow flex items-center justify-center relative'>
+								<div className='relative w-full md:w-[40%]'>
+									<div style={{ position: 'relative' }}>
+										<video className='flex rounded-xl z-0 cursor-pointer w-full h-auto' ref={videoRef} src={videoUrl} onClick={handlePlay} onEnded={handleEnded}></video>
+										<div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-white justify-center items-center ${isPlaying ? 'opacity-0' : ''}`}>
+											<button className='border-none bg-none' onClick={handlePlay}>
+												<IconContext.Provider value={{ color: 'white', size: '2em' }}>
+													<BiPlay />
+												</IconContext.Provider>
 											</button>
-										</IconContext.Provider>
+										</div>
+										<div className={`absolute bottom-0 right-0 m-4 ${isPlaying ? 'opacity-0' : ''}`}>
+											<IconContext.Provider value={{ className: 'text-white text-2xl md:text-4xl cursor-pointer bg-none border-none' }}>
+												<button className='border-none bg-none' onClick={() => videoRef.current?.requestFullscreen()}>
+													<BiFullscreen />
+												</button>
+											</IconContext.Provider>
+										</div>
 									</div>
 								</div>
+
 							</div>
 
-							<div className='flex flex-col md:flex-row items-center justify-center space-x-0 md:space-x-4'>
-								<button className='bg-blurple text-white text-xl p-2 md:p-4 mt-4 md:mt-10' onClick={() => downloadVideo()}>
+							<div className='flex flex-col md:flex-row items-center justify-center space-x-0 md:space-x-4 mt-10'>
+								<button className='bg-blurple text-white text-xl p-2 md:p-4' onClick={() => downloadVideo()}>
                                     Download your wrapped
 								</button>
 
-								<button className='bg-twitter text-white text-xl p-2 md:p-4 mt-4 md:mt-10 flex items-center' onClick={shareOnTwitter}>
+								<button className='bg-twitter text-white text-xl p-2 md:p-4 flex items-center' onClick={shareOnTwitter}>
 									<BsTwitter className='mr-2' /> Share on Twitter
 								</button>
 
-								<button className='bg-gradient-to-b from-[#f0f3f6] to-[#e6ebf1] text-black text-xl p-2 md:p-4 mt-4 md:mt-10 flex items-center border-2 border-solid border-[#d1d2d3]' onClick={star}>
+								<button className='bg-gradient-to-b from-[#f0f3f6] to-[#e6ebf1] text-black text-xl p-2 md:p-4 flex items-center border-2 border-solid border-[#d1d2d3]' onClick={star}>
 									<BsStarFill className='mr-2' /> Star
 								</button>
 
-								<button className='bg-kofi text-white text-xl p-2 md:p-4 mt-4 md:mt-10 flex items-center' onClick={() => window.open('https://ko-fi.com/assassin1234')}>
+								<button className='bg-kofi text-white text-xl p-2 md:p-4 flex items-center' onClick={() => window.open('https://ko-fi.com/assassin1234')}>
 									<SiKofi className='mr-2' /> Support us
 								</button>
 							</div>
@@ -259,12 +268,12 @@ function Generate() {
 						) : (
 							<>
 								<div className='flex flex-col items-center justify-center text-center'>
-									<h1 className='text-white text-4xl md:text-6xl mt-0 md:mt-10 font-bold'>Upload your data package</h1>
-									<p className='text-white text-xl md:text-3xl md-4 mt-2 md:mt-8 p-1 md:p-0'>We need your data package in order to generate your wrapped. Your data package will be removed immediately after your wrapped is done.</p>
+									<h1 className='text-white text-4xl md:text-6xl mt-0 md:mt-5 font-bold'>Upload your data package</h1>
+									<p className='text-white text-xl md:text-3xl md-4 mt-2 md:mt-4 p-1 md:p-0'>We need your data package in order to generate your wrapped. Your data package will be removed immediately after your wrapped is done.</p>
 								</div>
 
 								<div
-									className={`flex border-blurple border-4 border-dashed rounded-3xl mt-5 md:mt-[5%] h-[40%] cursor-pointer ${hover ? ' bg-blurple' : ''}`}
+									className={`flex border-blurple border-4 border-dashed rounded-3xl mt-4 h-[40%] cursor-pointer ${hover ? ' bg-blurple' : ''}`}
 									onClick={filePopup}
 									onDrop={handleDrop}
 									onDragOver={handleDragOver}
@@ -278,7 +287,7 @@ function Generate() {
 										</p>
 									</label>
 								</div>
-								<p className='text-lg md:text-2xl text-center md:text-start mt-[5%] md:mt-4'>Didn't receive your data package yet? Check out the demo on our <a href='/demo' aria-label='Check out the demo'>demo page</a>.</p>
+								<p className='text-lg md:text-2xl text-center md:text-start mt-[5%] md:mt-4'>Didn't receive your data package yet? Check out the demo on our <a href='/demo/' aria-label='Check out the demo'>demo page</a>.</p>
 							</>
 						)}
 				</div>
@@ -289,5 +298,3 @@ function Generate() {
 		</div>
 	);
 }
-
-export default Generate;
