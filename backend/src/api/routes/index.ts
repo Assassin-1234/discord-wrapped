@@ -1,5 +1,5 @@
 import Server from '../Server';
-import { ModulesMiddleware } from '../middleware';
+import cors from 'cors';
 import GenerateRoute from './GenerateRoute';
 
 /**
@@ -7,6 +7,6 @@ import GenerateRoute from './GenerateRoute';
  * @param server Express server instance
  */
 export const initRoutes = ({ application, config }: Server): void => {
-	ModulesMiddleware.register(application);
+	application.use(cors());
 	application.use(`${config.prefix}/generate`, new GenerateRoute().router);
 };
