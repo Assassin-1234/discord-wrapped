@@ -62,7 +62,7 @@ function Home() {
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Funding</h1>
-						<p className='text-xl md:text-2xl mt-2'>Thanks to <a href='https:/celendi.gg/' aria-label='Celendi'>Celendi</a>, we're able to provide the best experience possible. Their funding has allowed us to bring out a website that allows to generate multiple videos at the same time without the need of a queue system.</p>
+						<p className='text-xl md:text-2xl mt-2'>Thanks to <a href='https://celendi.gg/' aria-label='Celendi'>Celendi</a>, we're able to provide the best experience possible. Their funding has allowed us to bring out a website that allows to generate multiple videos at the same time without the need of a queue system.</p>
 					</div>
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
