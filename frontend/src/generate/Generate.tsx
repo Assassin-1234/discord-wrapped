@@ -58,8 +58,6 @@ function Generate() {
 		setProgress(Math.round((1 / 13) * 100));
 		setInfo('Uploading your data package');
 
-		console.log(import.meta.env.MODE);
-
 		await fetch(import.meta.env.MODE === 'production' ? 'api.discordwrapped.com/generate/upload' : 'http://localhost:3020/api/generate/upload', {
 			method: 'POST',
 			body: formData,
