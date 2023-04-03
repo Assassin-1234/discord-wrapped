@@ -58,13 +58,13 @@ function Generate() {
 		setProgress(Math.round((1 / 13) * 100));
 		setInfo('Uploading your data package');
 
-		await fetch(import.meta.env.MODE === 'production' ? 'https://api.discordwrapped.com/generate/upload' : 'http://localhost:3020/api/generate/upload', {
+		await fetch(import.meta.env.MODE === 'production' ? '/api/generate/upload' : 'http://localhost:3020/api/generate/upload', {
 			method: 'POST',
 			body: formData,
 		}).then(async res => {
 			const data = await res.json();
 
-			const ws = new WebSocket(import.meta.env.MODE === 'production' ? 'ws://api.discordwrapped.com' : 'ws://localhost:3020/api/');
+			const ws = new WebSocket(import.meta.env.MODE === 'production' ? 'ws://discordwrapped.com/api/' : 'ws://localhost:3020/api/');
 
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ id: data.id }));
@@ -78,7 +78,7 @@ function Generate() {
 				if (progressData.progress === 100) {
 					ws.close();
 
-					const videoResponse = await fetch(import.meta.env.MODE === 'production' ? `https://api.discordwrapped.com/generate/download/${data.id}` : `http://localhost:3020/api/generate/download/${data.id}`, {
+					const videoResponse = await fetch(import.meta.env.MODE === 'production' ? `/api/generate/download/${data.id}` : `http://localhost:3020/api/generate/download/${data.id}`, {
 						method: 'GET',
 					});
 
