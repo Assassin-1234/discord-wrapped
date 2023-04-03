@@ -58,7 +58,7 @@ function Generate() {
 		setProgress(Math.round((1 / 13) * 100));
 		setInfo('Uploading your data package');
 
-		await fetch(import.meta.env.MODE === 'production' ? 'api.discordwrapped.com/generate/upload' : 'http://localhost:3020/api/generate/upload', {
+		await fetch(import.meta.env.MODE === 'production' ? 'https://api.discordwrapped.com/generate/upload' : 'http://localhost:3020/api/generate/upload', {
 			method: 'POST',
 			body: formData,
 		}).then(async res => {
@@ -78,7 +78,7 @@ function Generate() {
 				if (progressData.progress === 100) {
 					ws.close();
 
-					const videoResponse = await fetch(import.meta.env.MODE === 'production' ? `api.discordwrapped.com/generate/download/${data.id}` : `http://localhost:3020/api/generate/download/${data.id}`, {
+					const videoResponse = await fetch(import.meta.env.MODE === 'production' ? `https://api.discordwrapped.com/generate/download/${data.id}` : `http://localhost:3020/api/generate/download/${data.id}`, {
 						method: 'GET',
 					});
 
