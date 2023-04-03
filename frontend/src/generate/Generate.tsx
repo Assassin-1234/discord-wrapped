@@ -58,15 +58,15 @@ function Generate() {
 		setProgress(Math.round((1 / 13) * 100));
 		setInfo('Uploading your data package');
 
-		console.log(import.meta.env.VITE_APP_ENV);
+		console.log(import.meta.env.MODE);
 
-		await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/upload` : `api.${import.meta.env.VITE_APP_URL}/api/generate/upload`, {
+		await fetch(import.meta.env.MODE === 'production' ? 'api.discordwrapped.com/generate/upload' : 'http://localhost:3020/api/generate/upload', {
 			method: 'POST',
 			body: formData,
 		}).then(async res => {
 			const data = await res.json();
 
-			const ws = new WebSocket(import.meta.env.VITE_APP_ENV === 'development' ? `ws://localhost:${import.meta.env.VITE_BACKEND_PORT}/api` : `ws://api.${import.meta.env.VITE_APP_URL}/`);
+			const ws = new WebSocket(import.meta.env.MODE === 'production' ? 'ws://api.discordwrapped.com' : 'ws://localhost:3020/api/');
 
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ id: data.id }));
@@ -80,7 +80,7 @@ function Generate() {
 				if (progressData.progress === 100) {
 					ws.close();
 
-					const videoResponse = await fetch(import.meta.env.VITE_APP_ENV === 'development' ? `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/generate/download/${data.id}` : `api.${import.meta.env.VITE_APP_URL}/api/generate/download/${data.id}`, {
+					const videoResponse = await fetch(import.meta.env.MODE === 'production' ? `api.discordwrapped.com/generate/download/${data.id}` : `http://localhost:3020/api/generate/download/${data.id}`, {
 						method: 'GET',
 					});
 
