@@ -18,7 +18,7 @@ export const ModulesMiddleware = {
 		);
 		application.use(
 			cors({
-				origin: config.environment === 'development' ? '*' : `https://${config.url}`,
+				origin: '*',
 				methods: ['GET', 'POST', 'HEAD', 'DELETE', 'PUT'],
 			})
 		);
