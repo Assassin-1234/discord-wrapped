@@ -9,7 +9,7 @@ import { WebSocketServer } from 'ws';
 
 const exServer: Server = new Server({
 	...config,
-	prefix: config.environment === 'development' ? '/api' : '/',
+	prefix: config.environment === 'development' ? '/api' : '',
 });
 const server: HTTPServer = createServer(exServer.application);
 const wss = new WebSocketServer({ server });
