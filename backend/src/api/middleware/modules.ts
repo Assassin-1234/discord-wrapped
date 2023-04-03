@@ -16,11 +16,6 @@ export const ModulesMiddleware = {
 		application.use(
 			morgan(config.environment === 'development' ? 'common' : 'short')
 		);
-		application.use(
-			cors({
-				origin: '*',
-				methods: ['GET', 'POST', 'HEAD', 'DELETE', 'PUT'],
-			})
-		);
+		application.use(cors());
 	},
 };
