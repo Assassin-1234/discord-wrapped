@@ -22,9 +22,14 @@ class GenerateController extends Controller {
 			return;
 		}
 
+		console.log(dataPackage);
+
 		const id = Math.random().toString(36).substring(7);
+		console.log(id);
 
 		renameSync(dataPackage, `uploads/${id}.zip`);
+
+		console.log('renamed');
 
 		res.send({ id });
 	}
