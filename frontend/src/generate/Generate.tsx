@@ -64,7 +64,7 @@ function Generate() {
 		}).then(async res => {
 			const data = await res.json();
 
-			const ws = new WebSocket(import.meta.env.MODE === 'production' ? 'ws://discordwrapped.com/api/' : 'ws://localhost:3020/api/');
+			const ws = new WebSocket(import.meta.env.MODE === 'production' ? 'wss://discordwrapped.com/api/' : 'ws://localhost:3020/api/');
 
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ id: data.id }));
