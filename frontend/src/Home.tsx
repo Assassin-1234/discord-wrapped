@@ -46,7 +46,7 @@ function Home() {
 			<div className='h-screen'>
 				<div className='flex flex-col items-center justify-center text-center mt-48'>
 					<h1 className='text-white text-4xl md:text-8xl font-bold'>Discord Wrapped</h1>
-					<p className='text-white text-xl md:text-3xl mt-2 p-1 md:p-0'>An insight on all the data collected by Discord, formed into a video just like Spotify Wrapped!</p>
+					<p className='text-white text-xl md:text-3xl mt-2 p-1 md:p-0 z-10'>An insight on all the data collected by Discord, formed into a video just like Spotify Wrapped!</p>
 					<button className='text-xl mt-7 z-10' onClick={generate}>Generate Your Wrapped</button>
 					<RiArrowDropDownLine size={70} className='mt-10 motion-safe:animate-bounce' />
 				</div>
