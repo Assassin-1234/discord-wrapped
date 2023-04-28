@@ -16,6 +16,8 @@ const wss = new WebSocketServer({ server });
 
 Logger.info(`Initialing back-end service on ${config.environment} environment...`);
 
+server.timeout = 600000;
+
 server.listen(config.port, (): void => {
 	Logger.ready(`Back-end service is running on port ${config.port}`);
 });
