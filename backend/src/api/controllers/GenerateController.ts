@@ -3,6 +3,7 @@ import Controller from './Controller';
 import wrap from '../../generator';
 import { renameSync } from 'fs';
 import WebSocket from 'ws';
+import path from 'path';
 
 /**
  * GenerateController
@@ -22,14 +23,11 @@ class GenerateController extends Controller {
 			return;
 		}
 
-		console.log(dataPackage);
-
 		const id = Math.random().toString(36).substring(7);
-		console.log(id);
 
-		renameSync(dataPackage, `uploads/${id}.zip`);
-
-		console.log('renamed');
+		const uploadsDir = path.join(process.cwd(), 'uploads');
+		const newPath = path.join(uploadsDir, `${id}.zip`);
+		renameSync(dataPackage, newPath);
 
 		res.send({ id });
 	}

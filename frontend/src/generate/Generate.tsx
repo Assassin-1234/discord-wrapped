@@ -278,7 +278,7 @@ function Generate() {
 									onDragLeave={handleDragLeave}
 								>
 									<label htmlFor='upload' className='flex flex-col items-center justify-center w-full cursor-pointer'>
-										<p className={hover ? 'text-5xl' : 'hidden'} id='dropit'>Drop it, we'll take care of it!</p>
+										<p className={hover ? 'text-5xl' : 'hidden'}>Drop it, we'll take care of it!</p>
 										<IoCloudUploadOutline className={`text-8xl md:text-9xl text-blurple${hover ? ' hidden' : ''}`} />
 										<p className={`text-white text-lg text-center md:text-2xl mt-4${hover ? ' hidden' : ''}`}>
                                             Drop you data package here or <a className='text-blurple cursor-pointer' aria-label='Browse instead of dropping a file'>browse</a>.

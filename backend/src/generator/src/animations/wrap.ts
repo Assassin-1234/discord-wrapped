@@ -1,7 +1,7 @@
 import path from 'path';
 import { createCanvas, loadImage } from 'canvas';
 import sharp from 'sharp';
-import { existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, rmSync, unlinkSync, readFileSync, writeFileSync } from 'fs';
 import type editlyType from 'editly';
 import ffmpeg from 'fluent-ffmpeg';
 import axios from 'axios';
@@ -128,9 +128,11 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 	const dir = `./${wrappedId}/`;
 	mkdirSync(dir);
 
-	const zip = new StreamZip.async({ file: `uploads/${wrappedId}.zip` });
+	const uploadsDir = path.join(process.cwd(), 'uploads');
+
+	const zip = new StreamZip.async({ file: path.join(uploadsDir, `${wrappedId}.zip`) });
 	await zip.extract(null, `${dir}/package`);
-	rmSync(`uploads/${wrappedId}.zip`, { recursive: true, force: true });
+
 	const dataPackage = `${dir}/package`;
 	const data: any = await getUserInfo(`${dataPackage}/account/user.json`, dataPackage, progressCallback);
 
