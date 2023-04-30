@@ -1,2 +1,2 @@
-import wrap from './src/animations/wrap';
+import wrap from './animations/wrap';
 export default wrap;

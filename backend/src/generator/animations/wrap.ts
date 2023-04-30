@@ -1,13 +1,13 @@
 import path from 'path';
 import { createCanvas, loadImage } from 'canvas';
 import sharp from 'sharp';
-import { existsSync, mkdirSync, rmSync, unlinkSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from 'fs';
 import type editlyType from 'editly';
 import ffmpeg from 'fluent-ffmpeg';
 import axios from 'axios';
 import * as ghEmoji from 'github-emoji';
 import { getUserInfo } from '../extractor/extract';
-import Tasks from '../../../constants/progress';
+import Tasks from '../../constants/progress';
 import StreamZip from 'node-stream-zip';
 
 /**
@@ -55,7 +55,7 @@ function getToolPath(tool: string): string {
 
 const ffmpegPath = getToolPath('ffmpeg');
 const ffprobePath = getToolPath('ffprobe');
-const audioFilePath = path.resolve('src/generator/audio.mp3');
+const audioFilePath = path.join(process.cwd(), 'src', 'generator', 'assets', 'audio.mp3');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
@@ -194,7 +194,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 				const response = await axios.get(url, { responseType: 'arraybuffer' });
 				resolve(response.data);
 			} catch (e) {
-				const response = readFileSync('./src/generator/src/assets/noSticker.png');
+				const response = readFileSync('./src/generator/assets/noSticker.png');
 				resolve(response);
 			}
 		});
@@ -248,7 +248,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 
 		let i = 0;
 
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/mostRecentGIFs.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/mostRecentGIFs.png'))), 0, 0);
 
 		const pagePromises = tenorLinks.map(async (tenorLink) => {
 			tenorLink = tenorLink.src;
@@ -284,7 +284,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 		const canvas = createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/topEmojis.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/topEmojis.png'))), 0, 0);
 
 		for (let i = 0; i < array.length; i++) {
 			const emojiObj = array[i];
@@ -336,7 +336,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 	async function createMoneyCount(text: string): Promise<void> {
 		const canvas = createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/moneyCount.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/moneyCount.png'))), 0, 0);
 
 		ctx.font = '235px Sans';
 		ctx.strokeStyle = '#000000';
@@ -358,7 +358,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 		const canvas = createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/topGames.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/topGames.png'))), 0, 0);
 		ctx.font = '40px Arial';
 		ctx.textAlign = 'center';
 		ctx.fillStyle = '#ffffff';
@@ -389,7 +389,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 		const canvas = createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/topStickers.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/topStickers.png'))), 0, 0);
 		ctx.font = '40px Arial';
 		ctx.textAlign = 'center';
 		for (let i = 0; i < array.length; i++) {
@@ -413,7 +413,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 		const canvas = createCanvas(1920, 1080);
 		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/mostUsedWords.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/mostUsedWords.png'))), 0, 0);
 		ctx.font = 'bold 80px Arial';
 
 		for (let i = 0; i < array.length; i++) {
@@ -444,7 +444,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 		const values = Object.values(array);
 		const keys = Object.keys(array);
 
-		ctx.drawImage((await loadImage(path.resolve('./src/generator/src/assets/summary.png'))), 0, 0);
+		ctx.drawImage((await loadImage(path.resolve('./src/generator/assets/summary.png'))), 0, 0);
 		ctx.font = 'bold 50px Arial';
 
 		for (let i = 0; i < values.length; i++) {
@@ -500,55 +500,55 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 			{
 				duration: 2.5,
 				layers: [
-					{ type: 'image', path: path.resolve('./src/generator/src/assets/opening.png') },
+					{ type: 'image', path: path.join(process.cwd(), 'src', 'generator', 'assets', 'opening.png') },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/mostRecentGIFs.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'mostRecentGIFs.png') },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/topEmojis.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'topEmojis.png') },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/moneyCount.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'moneyCount.png') },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/topGames.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'topGames.png') },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/topStickers.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'topStickers.png') },
 				],
 			},
 			{
 				duration: 5,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/mostUsedWords.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'mostUsedWords.png') },
 				],
 			},
 			{
 				duration: 10,
 				layers: [
-					{ type: 'image', path: path.resolve(`${dir}/summary.png`) },
+					{ type: 'image', path: path.join(process.cwd(), dir, 'summary.png') },
 				],
 			},
 			{
 				duration: 6,
 				layers: [
-					{ type: 'image', path: path.resolve('./src/generator/src/assets/ending.png') },
+					{ type: 'image', path: path.join(process.cwd(), 'src', 'generator', 'assets', 'ending.png') },
 				],
 			},
 		],
