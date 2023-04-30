@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { snakeCase } from 'snake-case';
 import axios from 'axios';
-import Tasks from '../../../constants/progress';
+import Tasks from '../../constants/progress';
 
 const eventsData = [
 	'joinVoiceChannel',
