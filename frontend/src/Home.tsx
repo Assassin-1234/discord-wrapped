@@ -56,13 +56,13 @@ function Home() {
 					<div className='px-5 md:pl-20 pb-10 text-center mt-16 md:mt-20 md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Discord Data Package</h1>
 						<p className='text-xl md:text-2xl mt-2'>We need your data package to be able to generate your wrapped. Find out
-                            how to request your data package <a href='https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data' aria-label='How to request your data'>in this article</a>.</p>
+                            how to request your data package <a href='https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data' aria-label='How to request your data' target='_blank'>in this article</a>.</p>
 						<p className='text-xl md:text-2xl mt-4'>Didn't receive your data package yet? Check out the demo on our <a href='/demo/' aria-label='Check out our demo'>demo page</a>.</p>
 					</div>
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Funding</h1>
-						<p className='text-xl md:text-2xl mt-2'>Thanks to <a href='https://celendi.gg/' aria-label='Celendi'>Celendi</a>, we're able to provide the best experience possible. Their funding has allowed us to bring out a website that allows to generate multiple videos at the same time without the need of a queue system.</p>
+						<p className='text-xl md:text-2xl mt-2'>Thanks to <a href='https://celendi.gg/' aria-label='Celendi' target='_blank'>Celendi</a>, we're able to provide the best experience possible. Their funding has allowed us to bring out a website that allows to generate multiple videos at the same time without the need of a queue system.</p>
 					</div>
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
@@ -93,8 +93,8 @@ function Home() {
 
 					{/* Footer */}
 					<div className='flex flex-row items-center justify-center text-center absolute bottom-0 w-full mb-4'>
-						<a href='https://github.com/Assassin-1234/discord-wrapped/' className='hidden md:flex text-center text-white transition text-xl font-bold pr-2' aria-label='Our GitHub repository'><BsGithub size={30} /></a>
-						<p className='text-lg md:text-xl px-4'>Discord Wrapped is not affiliated with Discord Inc. <span className='text-base p-0.5'>●</span> Made with ❤ by <a href='https://github.com/Iliannnn' aria-label='Iliannnn, the creator of this website'>Iliannnn</a></p>
+						<a href='https://github.com/Assassin-1234/discord-wrapped/' className='hidden md:flex text-center text-white transition text-xl font-bold pr-2' aria-label='Our GitHub repository' target='_blank'><BsGithub size={30} /></a>
+						<p className='text-lg md:text-xl px-4'>Discord Wrapped is not affiliated with Discord Inc. <span className='text-base p-0.5'>●</span> Made with ❤ by <a href='https://github.com/Iliannnn' aria-label='Iliannnn, the creator of this website' target='_blank'>Iliannnn</a></p>
 					</div>
 				</div>
 			</div>

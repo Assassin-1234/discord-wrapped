@@ -80,7 +80,7 @@ function Demo() {
 
 					<div className="flex items-center justify-center">
 						<button className="bg-blurple text-white text-xl p-4 mt-4 md:mt-10" onClick={() => downloadVideo()}>
-                            Download demo
+                            Download demo video
 						</button>
 					</div>
 				</div>
