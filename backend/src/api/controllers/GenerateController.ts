@@ -48,6 +48,7 @@ class GenerateController extends Controller {
 				}
 			});
 		} catch (e) {
+			console.error(e);
 			try {
 				ws.send(JSON.stringify({ progress: 500, info: 'There went something wrong, are you sure your data package is complete or valid?' }));
 			} catch {
