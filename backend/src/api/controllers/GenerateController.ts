@@ -4,6 +4,9 @@ import wrap from '../../generator';
 import { renameSync } from 'fs';
 import WebSocket from 'ws';
 import path from 'path';
+import { unlink } from 'fs';
+import { promisify } from 'util';
+const unlinkAsync = promisify(unlink);
 
 /**
  * GenerateController
@@ -28,6 +31,8 @@ class GenerateController extends Controller {
 		const uploadsDir = path.join(process.cwd(), 'uploads');
 		const newPath = path.join(uploadsDir, `${id}.zip`);
 		renameSync(dataPackage, newPath);
+
+		unlinkAsync(dataPackage);
 
 		res.send({ id });
 	}
