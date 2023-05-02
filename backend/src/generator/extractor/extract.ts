@@ -206,7 +206,7 @@ async function returnGameData(arr: any[]): Promise<any[]> {
 export async function getUserInfo(dir: string, dataPackage: string, progressCallback: (progress: number, info: string) => void): Promise<any> {
 	const rawData = fs.readFileSync(path.resolve(dir), 'utf-8').toString();
 	const data = JSON.parse(rawData);
-	const stickers = data.settings.frecency.stickerFrecency.stickers;
+	const stickers = data.settings.frecency.stickerFrecency?.stickers;
 
 	fetchMessages(dataPackage);
 
