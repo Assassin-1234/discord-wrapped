@@ -18,7 +18,7 @@ You can try it out on [discordwrapped.com](https://discordwrapped.com).
 - [Zyztem](https://github.com/Zyztem) for dockerizing the project
 
 # Contributing
-Pull requests are apperciated
+Pull requests are appreciated
 - Do not modify the `audio.mp3`
 - Do not push your own data package
 
