@@ -75,6 +75,8 @@ function Generate() {
 				setProgress(progressData.progress);
 				setInfo(progressData.info);
 
+				console.log(progressData);
+
 				if (progressData.progress === 100) {
 					ws.close();
 
