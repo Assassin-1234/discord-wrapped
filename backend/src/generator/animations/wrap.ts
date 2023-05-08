@@ -9,7 +9,6 @@ import * as ghEmoji from 'github-emoji';
 import { getUserInfo } from '../extractor/extract';
 import Tasks from '../../constants/progress';
 import StreamZip from 'node-stream-zip';
-import { fileTypeFromBuffer } from 'file-type';
 
 /**
  * Get the editly library
@@ -265,9 +264,11 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 			const filename = tenorLink.split('/').pop() + '.gif';
 
 			const tenorBuffer = await fetchTenorGIF(tenorLink);
-			const fileType = await fileTypeFromBuffer(tenorBuffer);
+			let ext = '';
+			if (tenorBuffer[0] === 0x89 && tenorBuffer[1] === 0x50 && tenorBuffer[2] === 0x4e && tenorBuffer[3] === 0x47) ext = 'png';
 
-			if (fileType?.ext === 'png') {
+
+			if (ext === 'png') {
 				ctx.drawImage((await loadImage(tenorBuffer)), coordinates[i].x, coordinates[i].y, coordinates[i].w, coordinates[i].h);
 			} else {
 				writeFileSync(filename, tenorBuffer);
