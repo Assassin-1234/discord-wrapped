@@ -33,6 +33,7 @@
     "dotenv": "^16.0.0",
     "editly": "^0.14.2",
     "express": "^4.18.1",
+    "file-type": "^18.3.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.1-security",
     "github-emoji": "^1.2.0",
