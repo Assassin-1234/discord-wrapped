@@ -206,8 +206,16 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
      * @returns {Promise<Buffer>} The buffer of the GIF
      */
 	async function fetchTenorGIF(url: string): Promise<Buffer> {
-		const response = await axios.get(url, { responseType: 'arraybuffer' });
-		return response.data;
+		// eslint-disable-next-line no-async-promise-executor
+		return new Promise(async (resolve) => {
+			try {
+				const response = await axios.get(url, { responseType: 'arraybuffer' });
+				resolve(response.data);
+			} catch (e) {
+				const response = readFileSync('./src/generator/assets/noSticker.png');
+				resolve(response);
+			}
+		});
 	}
 
 	/**
