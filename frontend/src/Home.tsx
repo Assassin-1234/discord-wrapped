@@ -87,8 +87,8 @@ function Home() {
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Restarts</h1>
-						<p className='text-xl md:text-2xl mt-2'>All wrappeds are stored in the memory of the server. This means that you got the time to download your wrapped before the server restarts. If you don't download your wrapped in time, you will have to generate it again.</p>
-						<p className='text-xl md:text-2xl mt-4'>Our server restarts everyday at <span className='border-dashed border-b-2' title='In your time zone'>{utcTime.toLocaleTimeString()}</span></p>
+						<p className='text-xl md:text-2xl mt-2'>All wrappeds are stored in the storage of the server. This means that you got the time to download your wrapped before the server restarts. If you don't download your wrapped in time, you will have to generate it again.</p>
+						<p className='text-xl md:text-2xl mt-4'>The website restarts everyday at <span className='border-dashed border-b-2' title='In your time zone'>{utcTime.toLocaleTimeString()}</span></p>
 					</div>
 
 					{/* Footer */}
@@ -100,7 +100,7 @@ function Home() {
 			</div>
 
 			{/* Clouds */}
-			<img src={clouds} alt='clouds' className='block absolute bottom-0 left-0 w-full bg-fixed' />
+			<img src={clouds} alt='clouds' className='block absolute bottom-0 left-0 w-full' />
 		</>
 	);
 }
