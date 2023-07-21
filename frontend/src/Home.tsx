@@ -100,7 +100,7 @@ function Home() {
 			</div>
 
 			{/* Clouds */}
-			<img src={clouds} alt='clouds' className='block absolute bottom-0 left-0 w-full' />
+			<img src={clouds} alt='clouds' className='block absolute bottom-0 left-0 w-full bg-fixed' />
 		</>
 	);
 }
