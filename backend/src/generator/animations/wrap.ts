@@ -261,7 +261,11 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 		const pagePromises = tenorLinks.map(async (tenorLink) => {
 			tenorLink = tenorLink.src;
 
-			const filename = tenorLink.split('/').pop() + '.gif';
+			let filename = tenorLink.split('/').pop()
+
+			filename = filename.includes('?') ?
+				filename.split('?').shift() :
+				filename + '.gif';
 
 			const tenorBuffer = await fetchTenorGIF(tenorLink);
 			let ext = '';
