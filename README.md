@@ -65,6 +65,7 @@ cd backend
 mv .env.example .env
 npm install
 npm run build
+# Run with your chosen process manager
 xvfb-run -s "-ac -screen 0 1920x1080x24" npm run start
 ```
 
