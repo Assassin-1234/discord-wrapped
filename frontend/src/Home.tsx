@@ -61,11 +61,6 @@ function Home() {
 					</div>
 
 					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
-						<h1 className='text-2xl md:text-4xl font-bold'>Funding</h1>
-						<p className='text-xl md:text-2xl mt-2'>Thanks to <a href='https://devolvex.net' aria-label='Devolvex' target='_blank'>Devolvex</a>, we're able to provide the best experience possible. Their funding has allowed us to bring out a website that allows to generate multiple videos at the same time without the need of a queue system.</p>
-					</div>
-
-					<div className='px-5 md:pl-20 pb-10 text-center md:text-start'>
 						<h1 className='text-2xl md:text-4xl font-bold'>Privacy</h1>
 						<p className='text-xl md:text-2xl mt-2'>We only use your data to generate your wrapped. We do not share your data with anyone. We do not sell your data. We do not use your data for anything else than generating your wrapped. Your data automatically gets deleted after your wrapped is generated.</p>
 					</div>
