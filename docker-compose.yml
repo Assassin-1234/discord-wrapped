@@ -2,10 +2,13 @@ version: '3'
 services:
   backend:
     build: ./backend
-    ports:
-      - 3020:3020
+    container_name: discord-wrapped-backend
   frontend:
     build: ./frontend
-    ports:
-      - 5173:5173
+    container_name: discord-wrapped-backend
+
+networks:
+  default:
+    external: true
+    name: proxy
     
