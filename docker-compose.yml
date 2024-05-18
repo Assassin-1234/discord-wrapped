@@ -5,7 +5,7 @@ services:
     container_name: discord-wrapped-backend
   frontend:
     build: ./frontend
-    container_name: discord-wrapped-backend
+    container_name: discord-wrapped-frontend
 
 networks:
   default:
