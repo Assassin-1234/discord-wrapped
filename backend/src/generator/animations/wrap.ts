@@ -55,7 +55,6 @@ function getToolPath(tool: string): string {
 
 const ffmpegPath = getToolPath('ffmpeg');
 const ffprobePath = getToolPath('ffprobe');
-const audioFilePath = path.join(process.cwd(), 'src', 'generator', 'assets', 'audio.mp3');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
@@ -509,7 +508,6 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 	await editly({
 		ffprobePath,
 		ffmpegPath,
-		audioFilePath: audioFilePath,
 		outPath: `${dir}/wrapped.mp4`,
 		width: 1920,
 		height: 1080,
