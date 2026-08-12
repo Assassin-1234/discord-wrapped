@@ -129,7 +129,7 @@ export default async (wrappedId: string, progressCallback: (progress: number, in
 
 	const uploadsDir = path.join(process.cwd(), 'uploads');
 
-	const zip = new StreamZip.async({ file: path.join(uploadsDir, `${wrappedId}.zip`) });
+	const zip = await StreamZip.async({ file: path.join(uploadsDir, `${wrappedId}.zip`) });
 	await zip.extract(null, `${dir}/package`);
 
 	const dataPackage = `${dir}/package`;
